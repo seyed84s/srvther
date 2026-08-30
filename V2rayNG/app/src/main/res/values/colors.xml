@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Latency & Status Indicators -->
+    <color name="colorPing">#3EDBB0</color>
+    <color name="colorPingAmber">#F5C451</color>
+    <color name="colorPingRed">#FF5C7A</color>
+    <color name="colorConfigType">#3EDBB0</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="color_fab_active">#3EDBB0</color>
+    <color name="color_fab_inactive">#4C8DFF</color>
+    <color name="divider_color_light">#1E2A4A</color>
+    <color name="colorIndicator">#3EDBB0</color>
+
+    <!-- Navy/Mint Brand Palette -->
+    <color name="navy_900">#0A0E1A</color>
+    <color name="srvx_bg">#0A0E1A</color>
+    <color name="srvx_surface">#0F1626</color>
+    <color name="srvx_surface_variant">#16203A</color>
+    <color name="srvx_card_bg">#1B2542</color>
+    <color name="srvx_card_stroke">#1E2A4A</color>
+    <color name="srvx_card_stroke_selected">#3EDBB0</color>
+    <color name="srvx_text_primary">#E6ECF5</color>
+    <color name="srvx_text_secondary">#9AA7BF</color>
+    <color name="srvx_text_muted">#9AA7BF</color>
+
+    <!-- Accents -->
+    <color name="srvx_gold">#3EDBB0</color>
+    <color name="srvx_gold_light">#32E0C4</color>
+    <color name="srvx_gold_dark">#4C8DFF</color>
+    <color name="srvx_gold_glow">#1F3EDBB0</color>
+
+    <color name="srvx_emerald">#3EDBB0</color>
+    <color name="srvx_emerald_light">#32E0C4</color>
+    <color name="srvx_emerald_bg">#151E33</color>
+    <color name="srvx_emerald_glow">#1F3EDBB0</color>
+
+    <color name="srvx_amber">#F5C451</color>
+    <color name="srvx_amber_bg">#1B2542</color>
+
+    <color name="srvx_red">#FF5C7A</color>
+    <color name="srvx_red_bg">#151E33</color>
+
+    <color name="srvx_blue">#4C8DFF</color>
+    <color name="srvx_blue_bg">#151E33</color>
+
+    <color name="srvx_purple">#4C8DFF</color>
+    <color name="srvx_purple_bg">#151E33</color>
+
+    <!-- Material 3 Mappings -->
+    <color name="md_theme_primary">#3EDBB0</color>
+    <color name="md_theme_onPrimary">#0A0E1A</color>
+    <color name="md_theme_primaryContainer">#16203A</color>
+    <color name="md_theme_onPrimaryContainer">#3EDBB0</color>
+
+    <color name="md_theme_secondary">#32E0C4</color>
+    <color name="md_theme_onSecondary">#0A0E1A</color>
+    <color name="md_theme_secondaryContainer">#16203A</color>
+    <color name="md_theme_onSecondaryContainer">#32E0C4</color>
+
+    <color name="md_theme_tertiary">#4C8DFF</color>
+    <color name="md_theme_onTertiary">#0A0E1A</color>
+    <color name="md_theme_tertiaryContainer">#16203A</color>
+    <color name="md_theme_onTertiaryContainer">#4C8DFF</color>
+
+    <color name="md_theme_error">#FF5C7A</color>
+    <color name="md_theme_errorContainer">#151E33</color>
+    <color name="md_theme_onError">#0A0E1A</color>
+    <color name="md_theme_onErrorContainer">#FF5C7A</color>
+
+    <color name="md_theme_background">#0A0E1A</color>
+    <color name="md_theme_onBackground">#E6ECF5</color>
+
+    <color name="md_theme_surface">#0F1626</color>
+    <color name="md_theme_onSurface">#E6ECF5</color>
+    <color name="md_theme_surfaceVariant">#16203A</color>
+    <color name="md_theme_onSurfaceVariant">#9AA7BF</color>
+    <color name="md_theme_inverseSurface">#E6ECF5</color>
+    <color name="md_theme_inverseOnSurface">#0A0E1A</color>
+
+    <color name="md_theme_outline">#1E2A4A</color>
+    <color name="md_theme_outlineVariant">#1F3EDBB0</color>
+
+    <color name="md_theme_inversePrimary">#3EDBB0</color>
+    <color name="md_theme_shadow">#000000</color>
+    <color name="md_theme_surfaceTint">#3EDBB0</color>
+    <color name="md_theme_scrim">#000000</color>
+</resources>

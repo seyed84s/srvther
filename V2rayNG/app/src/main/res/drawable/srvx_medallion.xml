@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SRVX mark — girih shamseh (eight-point star). Hairline treatment for the login screen. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="132dp" android:height="132dp"
+    android:viewportWidth="120" android:viewportHeight="120">
+    <path android:strokeColor="#2E3358" android:strokeWidth="0.8"
+        android:pathData="M60,2 A58,58 0 1,1 59.9,2 Z" />
+    <path android:strokeColor="#C9A24B" android:strokeWidth="1.8" android:strokeLineJoin="round"
+        android:pathData="M60.00,8.00 L71.48,32.28 L96.77,23.23 L87.72,48.52 L112.00,60.00 L87.72,71.48 L96.77,96.77 L71.48,87.72 L60.00,112.00 L48.52,87.72 L23.23,96.77 L32.28,71.48 L8.00,60.00 L32.28,48.52 L23.23,23.23 L48.52,32.28 Z" />
+    <path android:strokeColor="#EBCE8A" android:strokeWidth="1.1" android:strokeLineJoin="round"
+        android:pathData="M68.04,40.60 L79.40,51.96 L79.40,68.04 L68.04,79.40 L51.96,79.40 L40.60,68.04 L40.60,51.96 L51.96,40.60 Z" />
+    <path android:fillColor="#EBCE8A"
+        android:pathData="M60,51 L69,60 L60,69 L51,60 Z" />
+</vector>
