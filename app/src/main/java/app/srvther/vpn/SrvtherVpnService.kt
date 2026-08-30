@@ -302,7 +302,7 @@ class SrvtherVpnService : VpnService() {
                 "Local port ${10808} is still busy after ${PORT_RELEASE_WAIT_MS / 1000}s — starting anyway.",
             )
         }
-        DiagnosticsLog.i(TAG, "Launching engine (libsrvther.so)…")
+        DiagnosticsLog.i(TAG, "Launching engine…")
         engine = SrvtherProcess(applicationInfo.nativeLibraryDir, filesDir).also { it.start(profile) }
 
         SrvtherController.setState(ConnectionState.Connecting)

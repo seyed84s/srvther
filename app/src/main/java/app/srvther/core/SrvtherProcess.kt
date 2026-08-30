@@ -17,7 +17,10 @@ class SrvtherProcess(
     private var process: Process? = null
 
     fun start(profile: ConnectionProfile) {
-        val bin = File(nativeLibDir, "libsrvther.so")
+        val bin = listOf("libaether.so", "libsrvther.so")
+            .map { File(nativeLibDir, it) }
+            .firstOrNull { it.exists() }
+            ?: File(nativeLibDir, "libaether.so")
         if (!bin.exists()) {
             throw IllegalStateException("Engine binary missing: ${bin.absolutePath}")
         }
