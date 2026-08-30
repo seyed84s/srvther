@@ -334,15 +334,12 @@ class SrvtherVpnService : VpnService() {
                 app.srvther.core.CoreNativeManager.initCoreEnv(this)
                 val xrayJson = app.srvther.core.XrayConfigGenerator.generate(profile.vlessConfig)
                 val handler = object : libv2ray.CoreCallbackHandler {
-                    override fun onStart() { DiagnosticsLog.i(TAG, "Xray-core started") }
-                    override fun onStop() { DiagnosticsLog.i(TAG, "Xray-core stopped") }
+                    override fun onEmitStatus(p0: Long, p1: String?): Long = 0L
+                    override fun shutdown(): Long = 0L
+                    override fun startup(): Long = 0L
                 }
                 xrayController = app.srvther.core.CoreNativeManager.newCoreController(handler)
-                val startErr = xrayController?.startLoop(xrayJson)
-                if (startErr != null && startErr.isNotEmpty()) {
-                    DiagnosticsLog.e(TAG, "Xray-core failed: ")
-                    throw IllegalStateException("Xray-core failed to start")
-                }
+                xrayController?.startLoop(xrayJson, 0)
                 
                 val psiOpened = app.srvther.core.PortProbe.awaitOpen("127.0.0.1", 10808, 10000)
                 if (!psiOpened) {
@@ -350,8 +347,8 @@ class SrvtherVpnService : VpnService() {
                 }
                 DiagnosticsLog.i(TAG, "Xray SOCKS5 port 10808 is up.")
             } catch (e: Exception) {
-                DiagnosticsLog.e(TAG, "Xray error: ")
-                throw IllegalStateException("Failed to start Xray")
+                DiagnosticsLog.e(TAG, "Xray error: ${e.message}")
+                throw IllegalStateException("Failed to start Xray: ${e.message}")
             }
         }
 
@@ -470,11 +467,12 @@ class SrvtherVpnService : VpnService() {
                 app.srvther.core.CoreNativeManager.initCoreEnv(this)
                 val xrayJson = app.srvther.core.XrayConfigGenerator.generate(profile.vlessConfig)
                 val handler = object : libv2ray.CoreCallbackHandler {
-                    override fun onStart() {}
-                    override fun onStop() {}
+                    override fun onEmitStatus(p0: Long, p1: String?): Long = 0L
+                    override fun shutdown(): Long = 0L
+                    override fun startup(): Long = 0L
                 }
                 xrayController = app.srvther.core.CoreNativeManager.newCoreController(handler)
-                xrayController?.startLoop(xrayJson)
+                xrayController?.startLoop(xrayJson, 0)
                 if (!app.srvther.core.PortProbe.awaitOpen("127.0.0.1", 10808, 10000)) {
                     DiagnosticsLog.w(TAG, "Xray failed to restart - retrying.")
                     continue
