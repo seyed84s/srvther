@@ -454,5 +454,5 @@
         <item>WebDAV</item>
     </string-array>
 
-    <string name="srvx_theme_toggle">تغییر تم (روشن/تیره)</string>
+    <string name="srvther_theme_toggle">تغییر تم (روشن/تیره)</string>
 </resources>

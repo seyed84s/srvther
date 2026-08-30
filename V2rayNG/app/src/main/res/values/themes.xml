@@ -43,7 +43,7 @@
 
         <!-- Background colors -->
         <item name="android:colorBackground">#0A0E1A</item>
-        <item name="windowBackground">#0A0E1A</item>
+        <item name="android:windowBackground">#0A0E1A</item>
         <item name="colorOnBackground">@color/md_theme_onBackground</item>
 
         <!-- Outline colors -->
