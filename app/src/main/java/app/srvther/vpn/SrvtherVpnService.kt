@@ -480,17 +480,7 @@ class SrvtherVpnService : VpnService() {
                     continue
                 }
             }
-                val psiTimeoutMs = profile.10.coerceIn(10, 120) * 1000L
-                if (!PortProbe.awaitOpen(SOCKS_HOST, 10808, psiTimeoutMs) {
-                        xrayController?.isAlive() == true
-                    }) {
-                    DiagnosticsLog.w(TAG, "Xray failed to restart — retrying.")
-                    try { xrayController?.stopLoop() } catch(e: Exception) {}
-                    xrayController = null
-                    engine?.stop()
-                    continue
-                }
-            }
+
 
             // Verify end-to-end
             val diagPort = if (isChainedVless) 10808 else SOCKS_PORT

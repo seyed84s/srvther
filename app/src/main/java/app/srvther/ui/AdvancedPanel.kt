@@ -117,59 +117,7 @@ fun AdvancedPanel(
                 Column {
                     Spacer(Modifier.height(16.dp))
 
-                    // ---------- Psiphon Multi-Country ----------
-                    SectionHeader(stringResource(R.string.section_psiphon))
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            SettingLabel(stringResource(R.string.psiphon_chain_title))
-                            HelperText(stringResource(R.string.psiphon_chain_desc))
-                        }
-                        Switch(
-                            checked = profile.psiphonEnabled,
-                            onCheckedChange = { onProfileChange(profile.copy(psiphonEnabled = it)) },
-                            enabled = enabled,
-                        )
-                    }
-                    Spacer(Modifier.height(12.dp))
-
-                    if (profile.psiphonEnabled) {
-                        SettingLabel(stringResource(R.string.psiphon_region_label))
-                        DropdownSelector(
-                            options = PsiphonRegion.entries,
-                            selected = profile.psiphonRegion,
-                            onSelect = { onProfileChange(profile.copy(psiphonRegion = it)) },
-                            label = { "${it.flag} ${it.enName}" },
-                            enabled = enabled,
-                        )
-                        Spacer(Modifier.height(12.dp))
-
-                        LtrOutlinedTextField(
-                            value = profile.psiphonProtocols,
-                            onValueChange = { onProfileChange(profile.copy(psiphonProtocols = it)) },
-                            enabled = enabled,
-                            singleLine = true,
-                            label = { Text(stringResource(R.string.psiphon_protocols_label)) },
-                            placeholder = { Text("OSSH, SSH, UNFRONTED-MEEK-HTTPS") },
-                            supportingText = { Text(stringResource(R.string.psiphon_protocols_hint)) },
-                            modifier = Modifier.fillMaxWidth(),
-                        )
-                        Spacer(Modifier.height(12.dp))
-
-                        LtrOutlinedTextField(
-                            value = if (profile.psiphonTimeout == 0) "" else profile.psiphonTimeout.toString(),
-                            onValueChange = { onProfileChange(profile.copy(psiphonTimeout = it.toIntOrNull() ?: 25)) },
-                            enabled = enabled,
-                            singleLine = true,
-                            label = { Text(stringResource(R.string.psiphon_timeout_label)) },
-                            placeholder = { Text("25 (seconds)") },
-                            modifier = Modifier.fillMaxWidth(),
-                        )
-                    }
 
                     // ---------- Srvther Core ----------
                     SectionHeader(stringResource(R.string.section_srvther_core))

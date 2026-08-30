@@ -52,8 +52,6 @@ import app.srvther.ui.components.ButtonMode
 import app.srvther.ui.components.ConnectButton
 import app.srvther.ui.components.ConnectionCard
 import app.srvther.ui.components.DiagnosticsPanel
-import app.srvther.ui.components.CountrySelectorButton
-import app.srvther.ui.components.CountrySelectorSheet
 import app.srvther.ui.theme.SrvtherMint
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -95,10 +93,6 @@ fun HomeScreen(
     // Advanced settings, reachable directly from the home screen (top-right).
     var showAdvancedSheet by remember { mutableStateOf(false) }
     val advancedSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    
-    // Country selection
-    var showCountrySheet by remember { mutableStateOf(false) }
-    val countrySheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val settingsEnabled = state is ConnectionState.Idle || state is ConnectionState.Error
 
     ModalNavigationDrawer(
@@ -180,12 +174,7 @@ fun HomeScreen(
 
                 Spacer(Modifier.height(16.dp))
 
-                // Location / Country Selector
-                CountrySelectorButton(
-                    
-                    onClick = { showCountrySheet = true },
-                    enabled = settingsEnabled,
-                )
+
 
                 Spacer(Modifier.height(20.dp))
 
@@ -279,21 +268,7 @@ fun HomeScreen(
         }
     }
 
-    if (showCountrySheet) {
-        CountrySelectorSheet(
-            
-            onSelectRegion = { newRegion ->
-                onProfileChange(
-                    profile.copy(
-                        
-                        
-                    ),
-                )
-            },
-            onDismiss = { showCountrySheet = false },
-            sheetState = countrySheetState,
-        )
-    }
+
 }
 
 @Composable
