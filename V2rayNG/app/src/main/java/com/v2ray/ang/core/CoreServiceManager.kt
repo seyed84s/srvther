@@ -558,7 +558,7 @@ object CoreServiceManager {
         }
     }
 
-    private fun waitForAetherReady(timeoutMs: Long = 8000): Boolean {
+    private fun waitForAetherReady(timeoutMs: Long = 25000): Boolean {
         val start = System.currentTimeMillis()
         while (System.currentTimeMillis() - start < timeoutMs) {
             try {

@@ -11,20 +11,74 @@ import java.util.concurrent.TimeUnit
  */
 object AetherEngine {
     private var process: Process? = null
+    @Volatile
+    private var isStoppingManually = false
     const val SOCKS_PORT = 1819
+
+    private fun getExecutableBinary(context: Context): File? {
+        val nativeLibDir = context.applicationInfo.nativeLibraryDir
+        val binInNative = File(nativeLibDir, "libaether.so")
+        if (binInNative.exists()) {
+            binInNative.setExecutable(true, false)
+            if (binInNative.canExecute()) return binInNative
+        }
+
+        // Fallback 1: Files directory
+        val binInFiles = File(context.filesDir, "libaether.so")
+        if (binInFiles.exists() && binInFiles.length() > 1000000) {
+            binInFiles.setExecutable(true, false)
+            if (binInFiles.canExecute()) return binInFiles
+        }
+
+        // Fallback 2: Copy from nativeLibDir if present
+        if (binInNative.exists()) {
+            try {
+                binInNative.copyTo(binInFiles, overwrite = true)
+                binInFiles.setExecutable(true, false)
+                if (binInFiles.exists()) return binInFiles
+            } catch (e: Exception) {
+                Log.e("AetherEngine", "Failed copying from nativeLibDir", e)
+            }
+        }
+
+        // Fallback 3: Extract from APK
+        try {
+            val apkFile = File(context.applicationInfo.sourceDir)
+            if (apkFile.exists()) {
+                val zip = java.util.zip.ZipFile(apkFile)
+                val abis = android.os.Build.SUPPORTED_ABIS
+                var entry: java.util.zip.ZipEntry? = null
+                for (abi in abis) {
+                    entry = zip.getEntry("lib/$abi/libaether.so")
+                    if (entry != null) break
+                }
+                if (entry != null) {
+                    zip.getInputStream(entry).use { input ->
+                        binInFiles.outputStream().use { output ->
+                            input.copyTo(output)
+                        }
+                    }
+                    binInFiles.setExecutable(true, false)
+                    Log.i("AetherEngine", "Extracted libaether.so from APK to ${binInFiles.absolutePath}")
+                    return binInFiles
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("AetherEngine", "Failed extracting from APK", e)
+        }
+
+        return if (binInNative.exists()) binInNative else if (binInFiles.exists()) binInFiles else null
+    }
 
     fun start(context: Context, mode: String) {
         stop()
+        isStoppingManually = false
 
-        val nativeLibDir = context.applicationInfo.nativeLibraryDir
-        val bin = File(nativeLibDir, "libaether.so")
-        if (!bin.exists()) {
-            Log.e("AetherEngine", "Engine binary missing: ${bin.absolutePath}")
+        val bin = getExecutableBinary(context)
+        if (bin == null || !bin.exists()) {
+            Log.e("AetherEngine", "Engine binary missing")
             return
         }
-
-        // Make executable if needed (usually done by Android PM, but just in case)
-        bin.setExecutable(true)
 
         // Base arguments
         val command = mutableListOf(bin.absolutePath)
@@ -79,9 +133,10 @@ object AetherEngine {
                 } catch (e: Exception) {
                     Log.e("AetherEngine", "Error reading engine output", e)
                 } finally {
-                    // Engine crashed or stopped. Tear down the VPN to save battery/radio.
-                    Log.w("AetherEngine", "Engine exited! Tearing down VPN...")
-                    com.v2ray.ang.util.MessageUtil.sendMsg2Service(context, com.v2ray.ang.AppConfig.MSG_STATE_STOP, "")
+                    if (!isStoppingManually) {
+                        Log.w("AetherEngine", "Engine exited unexpectedly! Tearing down VPN...")
+                        com.v2ray.ang.util.MessageUtil.sendMsg2Service(context, com.v2ray.ang.AppConfig.MSG_STATE_STOP, "")
+                    }
                 }
             }, "AetherEngine-Output").apply { isDaemon = true }.start()
 
@@ -91,6 +146,7 @@ object AetherEngine {
     }
 
     fun stop() {
+        isStoppingManually = true
         process?.let {
             Log.i("AetherEngine", "Stopping Aether Engine...")
             it.destroy()
