@@ -1,0 +1,5 @@
+# SHA-256 of the certificate that signs every Psither release.
+# Recorded automatically on the first 1.2.2 build. Do not edit by hand:
+# if this value changes, users of 1.2.1 can no longer install an update
+# over their current app (they would have to uninstall and lose settings).
+c6b66b1ae96fd5af2739502222d30bd1fef418adc5b13dbf8d8b5d41769ddbae
