@@ -8,7 +8,7 @@ on:
       - main
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   LIBV2RAY_TAG: 'v26.6.1'
@@ -87,10 +87,44 @@ jobs:
         chmod 755 gradlew
         gradle assembleFdroidRelease --stacktrace
 
-    - name: Upload APK
+    - name: Extract Version
+      id: extract_version
+      run: |
+        VERSION=$(grep 'versionName = ' ${{ github.workspace }}/V2rayNG/app/build.gradle.kts | head -1 | sed -E 's/.*"([^"]+)".*/\1/')
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "tag_name=v$VERSION" >> $GITHUB_OUTPUT
+
+    - name: Upload Artifact
       uses: actions/upload-artifact@v4
       if: ${{ success() }}
       with:
         name: srvther-apk
         path: ${{ github.workspace }}/V2rayNG/app/build/outputs/apk/**/*.apk
         if-no-files-found: error
+
+    - name: Publish GitHub Release
+      uses: softprops/action-gh-release@v2
+      if: ${{ success() }}
+      with:
+        tag_name: ${{ steps.extract_version.outputs.tag_name }}
+        name: "Srvther ${{ steps.extract_version.outputs.tag_name }}"
+        body: |
+          # Srvther ${{ steps.extract_version.outputs.tag_name }} 🚀
+          
+          **شبکه خصوصی امن با تونل زنجیره‌ای Aether و هسته Xray**
+          
+          ### 📱 دانلود و نصب
+          فایل‌های APK زیر را دانلود و نصب کنید:
+          - **نسخه اصلی / All-in-One:** مناسب برای تمام دستگاه‌ها
+          
+          ### ✨ امکانات:
+          - اتصال زنجیره‌ای خودکار از طریق Aether (SOCKS5 1819) به سرور VLESS
+          - بدون نیاز به لاگین
+          - تم شیشه‌ای Glassmorphic (Navy / Mint)
+          - پشتیبانی از تمامی پروتکل‌های VLESS, VMess, SS, Trojan, Hysteria2
+        draft: false
+        prerelease: false
+        files: |
+          ${{ github.workspace }}/V2rayNG/app/build/outputs/apk/**/*.apk
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
