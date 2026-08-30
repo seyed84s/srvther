@@ -56,11 +56,8 @@ class MainRecyclerAdapter(
             val isSelected = guid == MmkvManager.getSelectServer()
 
             // Server card selection highlight
-            val strokeWidthPx = (if (isSelected) 2 else 1) * context.resources.displayMetrics.density
-            holder.itemMainBinding.cardItem.strokeWidth = strokeWidthPx.toInt()
-            holder.itemMainBinding.cardItem.strokeColor = ContextCompat.getColor(
-                context,
-                if (isSelected) R.color.srvx_card_stroke_selected else R.color.srvx_card_stroke
+            holder.itemMainBinding.cardItem.setBackgroundResource(
+                if (isSelected) R.drawable.bg_server_card_selected else R.drawable.bg_server_card
             )
             holder.itemMainBinding.imgRadio.setImageResource(
                 if (isSelected) R.drawable.srvx_radio_active else R.drawable.srvx_radio_inactive
