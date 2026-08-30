@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">اِتِر</string>
+    <string name="app_name">سِروثِر</string>
     <string name="tagline">آزادی، در یک لمس</string>
+
+    <string name="vless_config_title">پیکربندی VLESS</string>
+    <string name="vless_config_desc">هدایت ترافیک کانفیگ VLESS از دل بستر وارپ سِروثِر</string>
+    <string name="vless_config_hint">لینک کانفیگ vless:// را اینجا وارد کنید</string>
+    <string name="vless_paste">جای‌گذاری از کلیپ‌بورد</string>
+    <string name="vless_clear">پاک کردن کانفیگ</string>
+    <string name="vless_active">کانفیگ VLESS فعال است</string>
+    <string name="vless_direct">اتصال مستقیم سِروثِر (بدون VLESS)</string>
+    <string name="vless_set_config">افزودن کانفیگ VLESS</string>
+    <string name="vless_edit_config">ویرایش کانفیگ VLESS</string>
+    <string name="vless_pasted">کانفیگ VLESS از کلیپ‌بورد جای‌گذاری شد</string>
+    <string name="vless_invalid">لینک VLESS نامعتبر است (باید با vless:// شروع شود)</string>
+    <string name="vless_dialog_desc">لینک کانفیگ VLESS خود را وارد کنید تا ترافیک آن از بستر ضدسانسور کلادفلر عبور داده شود.</string>
+    <string name="vless_save">ذخیره</string>
+    <string name="vless_cancel">انصراف</string>
 
     <string name="advanced">تنظیمات پیشرفته</string>
 
@@ -42,8 +57,8 @@
     <string name="reconnect_attempt">تلاش %1$d از %2$d</string>
 
     <string name="notif_channel">وضعیت VPN</string>
-    <string name="notif_channel_desc">وضعیت اتصال اِتِر را نشان می‌دهد</string>
-    <string name="notif_title">اِتِر</string>
+    <string name="notif_channel_desc">وضعیت اتصال سِروثِر را نشان می‌دهد</string>
+    <string name="notif_title">سِروثِر</string>
 
     <string name="err_engine_timeout">هسته نتوانست پراکسی محلی را به‌موقع باز کند.</string>
     <string name="err_engine_died">هسته به‌طور غیرمنتظره متوقف شد.</string>
@@ -199,8 +214,10 @@
     <string name="dns_label">DNS داخل تونل</string>
     <string name="dns_hint">1.1.1.1, 1.0.0.1</string>
     <string name="dns_help">برای مقدار پیش‌فرض هسته (1.1.1.1, 1.0.0.1) خالی بگذارید. ورودی‌های نامعتبر نادیده گرفته می‌شوند.</string>
+    <string name="qs_tile_label">سِروثِر</string>
+
     <!-- Feature merge: widget, onboarding, ping, crash report -->
-    <string name="widget_desc">اتصال یا قطع Psither با یک لمس</string>
+    <string name="widget_desc">اتصال یا قطع سِروثِر با یک لمس</string>
     <string name="widget_toggle_desc">تغییر وضعیت اتصال</string>
     <string name="ping_label">پینگ</string>
     <string name="ping_measuring">در حال اندازه‌گیری…</string>
@@ -209,13 +226,13 @@
     <string name="onboarding_skip">رد کردن</string>
     <string name="onboarding_next">بعدی</string>
     <string name="onboarding_start">شروع</string>
-    <string name="onboarding_title_1">به Psither خوش آمدید</string>
-    <string name="onboarding_body_1">تانل سریع و امن برای عبور از سانسور. با یک لمس از طریق MASQUE، WireGuard یا وارپ×۲ متصل شوید.</string>
+    <string name="onboarding_title_1">به سِروثِر خوش آمدید</string>
+    <string name="onboarding_body_1">تانل سریع و امن برای عبور از سانسور. با یک لمس از طریق MASQUE، WireGuard یا وارپ×۲ به همراه اتصال زنجیره‌ای VLESS متصل شوید.</string>
     <string name="onboarding_title_2">انتخاب هوشمند پروتکل</string>
     <string name="onboarding_body_2">حالت هوشمند شبکه شما را بررسی می‌کند و پروتکلی را انتخاب می‌کند که واقعاً کار می‌کند، در صورت نیاز با مبهم‌سازی ضد DPI.</string>
     <string name="onboarding_title_3">حریم خصوصی از همان ابتدا</string>
     <string name="onboarding_body_3">بدون حساب کاربری، بدون لاگ، بدون ردیاب. اندروید در اولین اتصال اجازه VPN می‌خواهد؛ این سیستم است که کنترل را به شما می‌دهد.</string>
-    <string name="crash_title">Psither به‌طور غیرمنتظره متوقف شد</string>
+    <string name="crash_title">سِروثِر به‌طور غیرمنتظره متوقف شد</string>
     <string name="crash_subtitle">جزئیات زیر توسط کنترل‌کننده خرابی ذخیره شده است. می‌توانید آن را در گزارش خطا کپی کنید.</string>
     <string name="crash_copy">کپی جزئیات</string>
     <string name="crash_copied">کپی شد</string>
@@ -266,18 +283,7 @@
     <string name="reprovision_title">جایگزینی شناسهٔ ردشده</string>
     <string name="reprovision_desc">اگر کلادفلر شناسهٔ ذخیره‌شدهٔ دستگاه را نپذیرد، به‌جای نگه‌داشتن تونلی که وصل می‌شود اما ترافیکی عبور نمی‌دهد، به‌صورت خودکار شناسهٔ تازه ثبت می‌کند.</string>
 
-    <!-- Psiphon & Multi-Country Chaining -->
-    <string name="select_location">انتخاب کشور و لوکیشن</string>
-    <string name="search_country">جستجوی کشور یا کد…</string>
-    <string name="section_psiphon">اتصال زنجیره‌ای سایفون (لوکیشن کشورها)</string>
-    <string name="section_srvther_core">هسته Psither و کلودفلر</string>
-    <string name="psiphon_chain_title">خروج با کشور دلخواه (سایفون)</string>
-    <string name="psiphon_chain_desc">هدایت ترافیک سایفون از دل تونل مبهم‌سازی‌شده Psither برای دریافت آی‌پی کشور مورد نظر</string>
-    <string name="psiphon_region_label">کشور خروجی</string>
-    <string name="psiphon_protocols_label">پروتکل‌های سایفون (اختیاری)</string>
-    <string name="psiphon_protocols_hint">جدا شده با کاما: OSSH, SSH, UNFRONTED-MEEK-HTTPS, FRONTED-MEEK-HTTP</string>
-    <string name="psiphon_timeout_label">تایم‌اوت سایفون (ثانیه)</string>
-    <string name="err_psiphon_timeout">ارتباط با هسته سایفون با خطا یا تایم‌اوت مواجه شد.</string>
+    <string name="section_srvther_core">هسته سِروثِر و کلودفلر</string>
     <string name="search_clear">پاک کردن جستجو</string>
     <string name="selected">انتخاب‌شده</string>
     <string name="menu_close">بستن</string>

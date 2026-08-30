@@ -117,7 +117,20 @@ fun AdvancedPanel(
                 Column {
                     Spacer(Modifier.height(16.dp))
 
+                    // ---------- VLESS Chaining ----------
+                    SectionHeader(stringResource(R.string.vless_config_title))
 
+                    LtrOutlinedTextField(
+                        value = profile.vlessConfig,
+                        onValueChange = { onProfileChange(profile.copy(vlessConfig = it.trim())) },
+                        enabled = enabled,
+                        singleLine = false,
+                        label = { Text(stringResource(R.string.vless_config_title)) },
+                        placeholder = { Text(stringResource(R.string.vless_config_hint)) },
+                        supportingText = { Text(stringResource(R.string.vless_config_desc)) },
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                    Spacer(Modifier.height(16.dp))
 
                     // ---------- Srvther Core ----------
                     SectionHeader(stringResource(R.string.section_srvther_core))

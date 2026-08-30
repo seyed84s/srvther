@@ -52,6 +52,7 @@ import app.srvther.ui.components.ButtonMode
 import app.srvther.ui.components.ConnectButton
 import app.srvther.ui.components.ConnectionCard
 import app.srvther.ui.components.DiagnosticsPanel
+import app.srvther.ui.components.VlessConfigCard
 import app.srvther.ui.theme.SrvtherMint
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -172,11 +173,15 @@ fun HomeScreen(
                     textAlign = TextAlign.Center,
                 )
 
-                Spacer(Modifier.height(16.dp))
-
-
-
                 Spacer(Modifier.height(20.dp))
+
+                VlessConfigCard(
+                    profile = profile,
+                    onProfileChange = onProfileChange,
+                    enabled = settingsEnabled,
+                )
+
+                Spacer(Modifier.height(24.dp))
 
                 ConnectButton(mode = mode, onClick = onToggleConnection)
 
