@@ -51,20 +51,17 @@ jobs:
       - name: Install cargo-ndk
         run: cargo install cargo-ndk --locked
 
-      # This repo intentionally ships no gradle-wrapper.jar, so the build runs
-      # with the Gradle that is on PATH. Leaving that to the runner image is a
-      # time bomb: GitHub keeps bumping its preinstalled Gradle, and AGP 8.7.2
-      # only supports the 8.x line (Gradle 9 fails the build outright with an
-      # "unsupported" / plugin-compatibility error). Pin the exact version the
-      # wrapper descriptor already declares so the toolchain can never drift.
+      - name: Make Gradle wrapper executable
+        run: chmod +x gradlew
+
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: "8.9"
+          cache-disabled: false
 
       - name: Show build toolchain
         run: |
-          gradle --version
+          ./gradlew --version
           java -version 2>&1
 
       # 1.2.2: the BUILD owns the engine version, not a human. Every build
@@ -112,9 +109,6 @@ jobs:
           bash scripts/build-natives.sh aether
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build engine (Psiphon)
-        run: bash scripts/build-natives.sh psiphon
 
       # If the core moved AND the engine actually built with it, commit the new
       # CORE_VERSION, the refreshed upstream baseline and the auto-written
@@ -282,7 +276,7 @@ jobs:
           LOG="${RUNNER_TEMP:-/tmp}/gradle-release-build.log"
           for attempt in 1 2 3; do
             set +e
-            gradle :app:assembleRelease --no-daemon --stacktrace 2>&1 | tee "$LOG"
+            ./gradlew :app:assembleRelease --no-daemon --stacktrace 2>&1 | tee "$LOG"
             status=${PIPESTATUS[0]}
             set -e
             if [ "$status" -eq 0 ]; then
@@ -508,14 +502,14 @@ jobs:
           for key in "${!MAP[@]}"; do
             src="$(find app/build/outputs/apk/release -iname "*${key}*.apk" | head -n1)"
             if [ -n "$src" ]; then
-              cp "$src" "${OUT}/Psither-${VERSION_NAME}-${MAP[$key]}.apk"
+              cp "$src" "${OUT}/Srvther-${VERSION_NAME}-${MAP[$key]}.apk"
             fi
           done
           echo "Built APKs:"
           ls -la "$OUT"
 
       # Publish a Release on every successful build: each APK shows up as its
-      # own downloadable asset. The release TITLE is just "Psither vX.Y.Z"
+      # own downloadable asset. The release TITLE is just "Srvther vX.Y.Z"
       # (no "(build N)" suffix); the tag still embeds the run number so every
       # build gets a unique tag. The "What's new" body comes from
       # .github/release-notes.md - update that file whenever the version changes.
@@ -523,7 +517,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('v{0}-build.{1}', env.VERSION_NAME, github.run_number) }}
-          name: ${{ startsWith(github.ref, 'refs/tags/') && format('Psither {0}', github.ref_name) || format('Psither v{0}', env.VERSION_NAME) }}
+          name: ${{ startsWith(github.ref, 'refs/tags/') && format('Srvther {0}', github.ref_name) || format('Srvther v{0}', env.VERSION_NAME) }}
           files: artifacts/*.apk
           make_latest: true
           body_path: .github/release-notes.md

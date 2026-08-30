@@ -33,3 +33,16 @@ native/aether/aether/src/geoguard.rs
 app/src/main/java/studio/cluvex/aether/ui/components/StatusLine.kt
 app/src/main/java/studio/cluvex/aether/ui/components/TrafficPanel.kt
 app/src/main/java/studio/cluvex/aether/ui/components/ConnectionMeta.kt
+
+# --- Psiphon components (removed in Srvther) ---
+app/src/main/java/studio/cluvex/aether/core/PsiphonConfigGenerator.kt
+app/src/main/java/studio/cluvex/aether/core/PsiphonProcess.kt
+app/src/main/java/studio/cluvex/aether/model/PsiphonRegion.kt
+app/src/main/java/studio/cluvex/aether/ui/components/CountrySelectorButton.kt
+app/src/main/java/studio/cluvex/aether/ui/components/CountrySelectorSheet.kt
+app/src/main/java/app/srvther/core/PsiphonConfigGenerator.kt
+app/src/main/java/app/srvther/core/PsiphonProcess.kt
+app/src/main/java/app/srvther/model/PsiphonRegion.kt
+app/src/main/java/app/srvther/ui/components/CountrySelectorButton.kt
+app/src/main/java/app/srvther/ui/components/CountrySelectorSheet.kt
+
