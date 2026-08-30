@@ -27,9 +27,23 @@ object CoreNativeManager {
             try {
                 // Seq.setContext(context?.applicationContext)
                 val assetPath = context?.filesDir?.absolutePath ?: ""
-                val deviceId = "android"
+                val deviceId = try {
+                    val androidId = android.provider.Settings.Secure.getString(
+                        context?.contentResolver,
+                        android.provider.Settings.Secure.ANDROID_ID,
+                    )
+                    if (!androidId.isNullOrBlank()) {
+                        val md = java.security.MessageDigest.getInstance("MD5")
+                        md.digest(androidId.toByteArray(Charsets.UTF_8))
+                            .joinToString("") { "%02x".format(it) }
+                    } else {
+                        java.util.UUID.randomUUID().toString().replace("-", "")
+                    }
+                } catch (_: Exception) {
+                    java.util.UUID.randomUUID().toString().replace("-", "")
+                }
                 Libv2ray.initCoreEnv(assetPath, deviceId)
-                Log.i("CoreNative", "V2Ray core environment initialized successfully")
+                Log.i("CoreNative", "V2Ray core environment initialized successfully (deviceId=$deviceId)")
             } catch (e: Exception) {
                 Log.e("CoreNative", "Failed to initialize V2Ray core environment", e)
                 initialized.set(false)
