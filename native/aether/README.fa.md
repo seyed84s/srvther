@@ -1,14 +1,14 @@
-# Aether
+# Srvther
 
-![Aether](Docs/Aether.png)
+![Srvther](Docs/Srvther.png)
 
 ### اینترنت آزاد برای همه :))
 
 **[🇬🇧 English README](README.md)** · **[📖 مستندات کامل](Docs/GUIDE.fa.md)**
 
-Aether یک کلاینت دور زدن سانسور اینترنت است که برای شبکه‌های به‌شدت محدود و فیلترشده طراحی شده است. این برنامه به‌صورت خودکار مسیرهای قابل‌دسترس را پیدا می‌کند، یک تونل رمزنگاری‌شده برقرار می‌کند و یک پراکسی محلی SOCKS5 در اختیار برنامه‌های شما قرار می‌دهد.
+Srvther یک کلاینت دور زدن سانسور اینترنت است که برای شبکه‌های به‌شدت محدود و فیلترشده طراحی شده است. این برنامه به‌صورت خودکار مسیرهای قابل‌دسترس را پیدا می‌کند، یک تونل رمزنگاری‌شده برقرار می‌کند و یک پراکسی محلی SOCKS5 در اختیار برنامه‌های شما قرار می‌دهد.
 
-برخلاف VPNهای سنتی، Aether برای محیط‌هایی ساخته شده که در آن‌ها بازرسی عمیق بسته‌ها (DPI)، شناسایی الگوی پروتکل، محدودسازی UDP و مسدودسازی مقصدها به‌طور گسترده انجام می‌شود.
+برخلاف VPNهای سنتی، Srvther برای محیط‌هایی ساخته شده که در آن‌ها بازرسی عمیق بسته‌ها (DPI)، شناسایی الگوی پروتکل، محدودسازی UDP و مسدودسازی مقصدها به‌طور گسترده انجام می‌شود.
 
 ## ویژگی‌ها
 
@@ -38,17 +38,17 @@ Aether یک کلاینت دور زدن سانسور اینترنت است که �
 این دستور رو کپی کن و توی ترموکس بزن:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/CluvexStudio/aether/main/aether.sh -o aether.sh && chmod +x aether.sh && ./aether.sh install
+curl -fsSL https://raw.githubusercontent.com/CluvexStudio/srvther/main/srvther.sh -o srvther.sh && chmod +x srvther.sh && ./srvther.sh install
 ```
 
-این اسکریپت خودش معماری دستگاهت رو تشخیص می‌ده، نسخه‌ی مناسب رو دانلود می‌کنه، چک‌سامش رو تأیید می‌کنه و `aether` رو توی `$PREFIX/bin` نصب می‌کنه. بعدش با دستور زیر اجراش کن:
+این اسکریپت خودش معماری دستگاهت رو تشخیص می‌ده، نسخه‌ی مناسب رو دانلود می‌کنه، چک‌سامش رو تأیید می‌کنه و `srvther` رو توی `$PREFIX/bin` نصب می‌کنه. بعدش با دستور زیر اجراش کن:
 
 ```bash
-aether
+srvther
 ```
 
-برای آپدیت بعداً: `./aether.sh update`
-برای حذف: `./aether.sh uninstall`
+برای آپدیت بعداً: `./srvther.sh update`
+برای حذف: `./srvther.sh uninstall`
 
 ## ساخت (Build)
 
@@ -58,11 +58,11 @@ aether
 - کامپایلر C/C++
 - CMake
 
-پوشه‌ی `quiche` باید در کنار پوشه‌ی `aether` قرار داشته باشد:
+پوشه‌ی `quiche` باید در کنار پوشه‌ی `srvther` قرار داشته باشد:
 
 ```text
 <repo>/
-  aether/
+  srvther/
   quiche/
 ```
 
@@ -75,37 +75,37 @@ cargo build --release
 فایل نهایی:
 
 ```text
-target/release/aether
+target/release/srvther
 ```
 
 ## داکر (Docker)
 
-شما می‌توانید Aether را در یک محیط ایزوله با استفاده از داکر اجرا کنید. ایمیج رسمی برنامه روی GitHub Container Registry (GHCR) در دسترس است.
+شما می‌توانید Srvther را در یک محیط ایزوله با استفاده از داکر اجرا کنید. ایمیج رسمی برنامه روی GitHub Container Registry (GHCR) در دسترس است.
 
 > **پراکسی SOCKS5 هیچ احراز هویتی ندارد.** هر کسی که به این پورت دسترسی داشته باشد می‌تواند از تونل شما استفاده کند. همه‌ی دستورهای زیر پورت را فقط روی `127.0.0.1` منتشر می‌کنند تا تنها از خود دستگاه شما قابل دسترسی باشد. آن را با `-p 1819:1819` عوض نکنید، چون آن شکل روی همه‌ی اینترفیس‌های سیستم گوش می‌دهد و پراکسی را به یک رله‌ی باز تبدیل می‌کند. اگر واقعاً نیاز دارید به دستگاه‌های دیگر سرویس بدهید، جلوی آن یک لایه‌ی با احراز هویت بگذارید و پورت را با فایروال محدود کنید.
 
-والیوم `-v aether-data:/data` هویت WARP ساخته‌شده را بین اجراها نگه می‌دارد. بدون آن، هر بار اجرا یک دستگاه کاملاً جدید ثبت می‌شود و Cloudflare کم‌کم آدرس شما را محدود می‌کند.
+والیوم `-v srvther-data:/data` هویت WARP ساخته‌شده را بین اجراها نگه می‌دارد. بدون آن، هر بار اجرا یک دستگاه کاملاً جدید ثبت می‌شود و Cloudflare کم‌کم آدرس شما را محدود می‌کند.
 
 دریافت و اجرای ایمیج از پیش‌ساخته‌شده (برای تنظیمات اولیه به حالت تعاملی نیاز است):
 
 ```bash
-docker run -it -p 127.0.0.1:1819:1819 -v aether-data:/data ghcr.io/cluvexstudio/aether:latest
+docker run -it -p 127.0.0.1:1819:1819 -v srvther-data:/data ghcr.io/cluvexstudio/srvther:latest
 ```
 
 همچنین می‌توانید با ارسال متغیرهای محیطی از پرسش‌های اولیه عبور کنید:
 
 ```bash
-docker run -it -p 127.0.0.1:1819:1819 -v aether-data:/data \
+docker run -it -p 127.0.0.1:1819:1819 -v srvther-data:/data \
   -e AETHER_PROTOCOL=masque \
   -e AETHER_SCAN=balanced \
-  ghcr.io/cluvexstudio/aether:latest
+  ghcr.io/cluvexstudio/srvther:latest
 ```
 
 در صورتی که ترجیح می‌دهید ایمیج را خودتان بیلد کنید:
 
 ```bash
-docker build -t aether .
-docker run -it -p 127.0.0.1:1819:1819 -v aether-data:/data aether
+docker build -t srvther .
+docker run -it -p 127.0.0.1:1819:1819 -v srvther-data:/data srvther
 ```
 
 ## اجرا
@@ -113,18 +113,18 @@ docker run -it -p 127.0.0.1:1819:1819 -v aether-data:/data aether
 برنامه را بدون هیچ آرگومانی اجرا کنید و به سؤال‌ها جواب بدید:
 
 ```bash
-./target/release/aether
+./target/release/srvther
 ```
 
 یا با پرچم‌ها از سؤال‌ها رد شید:
 
 ```bash
-./target/release/aether --masque -4 --scan turbo --noize firewall
+./target/release/srvther --masque -4 --scan turbo --noize firewall
 ```
 
-روی ویندوز، به‌جای اون کافیه روی `run-aether.bat` (که همراه zip ریلیز میاد) دابل‌کلیک کنی — یه ترمینال باز می‌کنه، `aether.exe` رو اجرا می‌کنه، و بعدش پنجره رو باز نگه می‌داره تا هر خطایی رو بتونی بخونی.
+روی ویندوز، به‌جای اون کافیه روی `run-srvther.bat` (که همراه zip ریلیز میاد) دابل‌کلیک کنی — یه ترمینال باز می‌کنه، `srvther.exe` رو اجرا می‌کنه، و بعدش پنجره رو باز نگه می‌داره تا هر خطایی رو بتونی بخونی.
 
-هر سؤال یه پرچم و یه متغیر محیطی معادل داره. برای لیست کامل `./target/release/aether --help` رو بزن، یا به راهنماهای پایین‌تر مراجعه کن.
+هر سؤال یه پرچم و یه متغیر محیطی معادل داره. برای لیست کامل `./target/release/srvther --help` رو بزن، یا به راهنماهای پایین‌تر مراجعه کن.
 
 پس از اجرا، پراکسی SOCKS5 روی آدرس زیر در دسترس خواهد بود:
 
@@ -175,7 +175,7 @@ curl -x socks5h://127.0.0.1:1819 https://www.cloudflare.com/cdn-cgi/trace
 
 ## حمایت مالی (Donate)
 
-اگه Aether به دردت خورده و می‌خوای از توسعه‌ش حمایت کنی:
+اگه Srvther به دردت خورده و می‌خوای از توسعه‌ش حمایت کنی:
 
 - **TRX (Tron):** `TRxVSHcoADZnBfztFmFb2TQopusAwWYEVR`
 - **BTC:** `bc1qnjnvzsa5avgj7n0uy383cv5zdxfjnvvp257egm`

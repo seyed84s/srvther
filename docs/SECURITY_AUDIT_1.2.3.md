@@ -1,7 +1,7 @@
-# Aether Android - Security Audit 1.2.3 (engine core v1.5.0)
+# Srvther Android - Security Audit 1.2.3 (engine core v1.5.0)
 
 Scope: the Android app in this repository (`app/`), its build/CI scripts, and
-the way it launches and feeds the vendored Rust engine (`native/aether`,
+the way it launches and feeds the vendored Rust engine (`native/srvther`,
 core **v1.5.0**). The engine's own cryptography is upstream code and was
 reviewed only where this app supplies data to it.
 

@@ -28,10 +28,10 @@ bash scripts/generate-keystore.sh
 ```bash
 keytool -genkeypair -v \
   -keystore release.keystore \
-  -alias aether-release \
+  -alias srvther-release \
   -keyalg RSA -keysize 4096 \
   -validity 10950 \
-  -dname "CN=Aether Mobile, OU=Release, O=Aether"
+  -dname "CN=Srvther Mobile, OU=Release, O=Srvther"
 ```
 
 سپس فایل `keystore.properties` را در ریشه پروژه بسازید (نمونه: `keystore.properties.example`):
@@ -39,7 +39,7 @@ keytool -genkeypair -v \
 ```properties
 storeFile=release.keystore
 storePassword=رمز-شما
-keyAlias=aether-release
+keyAlias=srvther-release
 keyPassword=رمز-شما
 ```
 
@@ -80,7 +80,7 @@ apksigner verify --print-certs app/build/outputs/apk/release/app-universal-relea
 |---|---|
 | `KEYSTORE_BASE64` | خروجی `base64 -w0 release.keystore` |
 | `KEYSTORE_PASSWORD` | رمز Keystore |
-| `KEY_ALIAS` | `aether-release` |
+| `KEY_ALIAS` | `srvther-release` |
 | `KEY_PASSWORD` | رمز کلید |
 
 > نکته: مکانیزم فعلی CI که در نبود Secrets یک «CI keystore» را داخل ریپو ذخیره می‌کند فقط مشکل
@@ -157,7 +157,7 @@ Android Studio شما هم همان امضای CI را دارد.
 
 | شرط | وضعیت در ۱.۲.۲ |
 |---|---|
-| `applicationId` یکسان | `studio.cluvex.aether` — **تغییر نکرده** |
+| `applicationId` یکسان | `app.srvther` — **تغییر نکرده** |
 | گواهی امضای یکسان (همان زنجیرهٔ کی‌استور) | همان کلید رسمی ۱.۲.۱ (حالت `release` — پایین بخوانید) |
 | `versionCode` صعودی | از **۵** به **۶** |
 
@@ -215,8 +215,8 @@ versionName = "1.2.2"
 
 ```bash
 # اثر انگشت نسخهٔ قدیمی و جدید باید کاملاً یکسان باشند
-apksigner verify --print-certs Aether-1.2.1-universal.apk | grep -i 'SHA-256 digest'
-apksigner verify --print-certs Aether-1.2.2-universal.apk | grep -i 'SHA-256 digest'
+apksigner verify --print-certs Srvther-1.2.1-universal.apk | grep -i 'SHA-256 digest'
+apksigner verify --print-certs Srvther-1.2.2-universal.apk | grep -i 'SHA-256 digest'
 
 # مقدار پین‌شده در مخزن
 cat .github/expected-signer.txt
@@ -225,7 +225,7 @@ cat .github/expected-signer.txt
 و برای تست واقعی نصب روی نسخهٔ قبلی (بدون حذف):
 
 ```bash
-adb install -r Aether-1.2.2-arm64-v8a.apk
+adb install -r Srvther-1.2.2-arm64-v8a.apk
 ```
 
 خروجی باید `Success` باشد. در صورت مشاهدهٔ `INSTALL_FAILED_UPDATE_INCOMPATIBLE` یعنی کلید امضا عوض شده است
@@ -233,7 +233,7 @@ adb install -r Aether-1.2.2-arm64-v8a.apk
 
 ### دادهٔ کاربر چه می‌شود؟
 
-پروفایل در DataStore با نام `aether_profile` ذخیره می‌شود و در نصب روی نسخهٔ قبلی دست‌نخورده باقی می‌ماند.
+پروفایل در DataStore با نام `srvther_profile` ذخیره می‌شود و در نصب روی نسخهٔ قبلی دست‌نخورده باقی می‌ماند.
 کلید جدید `location` که در ۱.۲.۲ اضافه شده، در پروفایل‌های قدیمی وجود ندارد و به مقدار پیش‌فرض
 (رشتهٔ خالی = حالت خودکار) فرومی‌افتد؛ پس مهاجرت داده لازم نیست و رفتار برنامه برای کاربران
 ارتقایافته دقیقاً مانند قبل است تا زمانی که خودشان یک کشور را انتخاب کنند.

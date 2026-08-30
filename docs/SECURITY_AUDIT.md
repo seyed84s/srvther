@@ -1,4 +1,4 @@
-# گزارش ممیزی امنیتی — AetherMobile v1.2.1
+# گزارش ممیزی امنیتی — SrvtherMobile v1.2.1
 
 ممیزی کامل سورس‌کد (Kotlin/Compose + پیکربندی Gradle/Manifest + اسکریپت‌های CI) انجام شد.
 هر یافته با سطح ریسک، توضیح فنی و وضعیت رفع آمده است.
@@ -23,7 +23,7 @@
 
 - ✅ هیچ API Key، توکن، کلید خصوصی/متقارن یا رمز عبوری در کد وجود ندارد.
 - ℹ️ تنها آدرس‌های ثابت: اندپوینت‌های عمومی ژئولوکیشن (`ip-api.com`, `www.cloudflare.com`, `1.1.1.1`) و پورت‌های لوکال (`127.0.0.1:1819/10808/10809`). این‌ها سرویس عمومی‌اند و راز محسوب نمی‌شوند.
-- ⚠️ (CI) در نبود Secrets، ورک‌فلو یک keystore با رمز ثابت `aether-ci-keystore` داخل ریپو ذخیره می‌کند. این فقط برای آپدیت‌پذیری است و اصالت ندارد — در `docs/SIGNING.md` مستند شد؛ برای انتشار واقعی حتماً Secrets تنظیم شود.
+- ⚠️ (CI) در نبود Secrets، ورک‌فلو یک keystore با رمز ثابت `srvther-ci-keystore` داخل ریپو ذخیره می‌کند. این فقط برای آپدیت‌پذیری است و اصالت ندارد — در `docs/SIGNING.md` مستند شد؛ برای انتشار واقعی حتماً Secrets تنظیم شود.
 
 ## ۲. رمزنگاری و پروتکل‌ها (Cryptography & Protocols)
 
@@ -57,7 +57,7 @@
 
 ## ۶. لاگ‌گیری ناامن (Insecure Logging)
 
-- 🔴→✅ **یافته (متوسط، رفع شد):** `AetherProcess` تمام stdout موتور (شامل اندپوینت‌ها، IPها و echo کانفیگ) را با `Log.i("aether-engine", …)` به Logcat می‌فرستاد. Logcat از طریق adb و باگ‌ریپورت‌ها قابل خواندن است. اکنون این mirroring فقط در بیلد **DEBUG** (`BuildConfig.DEBUG`) فعال است؛ پنل تشخیصی داخل اپ همچنان کامل کار می‌کند.
+- 🔴→✅ **یافته (متوسط، رفع شد):** `SrvtherProcess` تمام stdout موتور (شامل اندپوینت‌ها، IPها و echo کانفیگ) را با `Log.i("srvther-engine", …)` به Logcat می‌فرستاد. Logcat از طریق adb و باگ‌ریپورت‌ها قابل خواندن است. اکنون این mirroring فقط در بیلد **DEBUG** (`BuildConfig.DEBUG`) فعال است؛ پنل تشخیصی داخل اپ همچنان کامل کار می‌کند.
 - ✅ سایر Logهای Logcat بازبینی شدند؛ داده حساس دیگری چاپ نمی‌شود.
 
 ## ۷. کیفیت کد و پیکربندی شبکه
@@ -71,7 +71,7 @@
 ## تغییرات امنیتی اعمال‌شده در این نسخه
 
 1. `NetProbe.kt` — افزودن Hostname Verification به `tlsWrap` (بستن مسیر MitM).
-2. `AetherProcess.kt` — حذف خروجی موتور از Logcat در بیلد Release.
+2. `SrvtherProcess.kt` — حذف خروجی موتور از Logcat در بیلد Release.
 3. `AndroidManifest.xml` + `res/xml/network_security_config.xml` — منع سراسری cleartext.
 4. `res/xml/backup_rules.xml` — exclude کامل همه داده‌ها (دفاع عمقی).
 5. `app/build.gradle.kts` + `docs/SIGNING.md` — حذف fallback بی‌صدای کلید debug و مستند‌سازی امضای امن.

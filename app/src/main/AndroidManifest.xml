@@ -27,20 +27,20 @@
     </queries>
 
     <application
-        android:name=".AetherApp"
+        android:name=".SrvtherApp"
         android:allowBackup="false"
         android:networkSecurityConfig="@xml/network_security_config"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AetherMobile">
+        android:theme="@style/Theme.SrvtherMobile">
 
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|density"
-            android:theme="@style/Theme.AetherMobile"
+            android:theme="@style/Theme.SrvtherMobile"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,7 +49,7 @@
         </activity>
 
         <service
-            android:name=".vpn.AetherVpnService"
+            android:name=".vpn.SrvtherVpnService"
             android:exported="false"
             android:permission="android.permission.BIND_VPN_SERVICE"
             android:foregroundServiceType="specialUse">
@@ -58,12 +58,12 @@
             </intent-filter>
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Runs the Aether censorship-circumvention VPN tunnel while active" />
+                android:value="Runs the Srvther censorship-circumvention VPN tunnel while active" />
         </service>
 
         <!-- Quick Settings tile: one-tap connect/disconnect from the shade. -->
         <service
-            android:name=".vpn.AetherTileService"
+            android:name=".vpn.SrvtherTileService"
             android:exported="true"
             android:icon="@drawable/ic_notification"
             android:label="@string/qs_tile_label"
@@ -82,7 +82,7 @@
           service's state-change hook, never on a timer.
         -->
         <receiver
-            android:name=".widget.AetherWidgetProvider"
+            android:name=".widget.SrvtherWidgetProvider"
             android:exported="false"
             android:label="@string/app_name">
             <intent-filter>
@@ -90,18 +90,18 @@
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/aether_widget_info" />
+                android:resource="@xml/srvther_widget_info" />
         </receiver>
 
         <!--
           Crash report screen (feature merge): shows the fatal
-          exception saved by AetherApp's crash handler on the previous run.
+          exception saved by SrvtherApp's crash handler on the previous run.
           Not exported; only MainActivity can open it.
         -->
         <activity
             android:name=".CrashReportActivity"
             android:exported="false"
-            android:theme="@style/Theme.AetherMobile" />
+            android:theme="@style/Theme.SrvtherMobile" />
 
         <!--
           1.2.2: the FileProvider that exported downloaded APKs to the system

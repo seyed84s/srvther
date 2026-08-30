@@ -270,7 +270,7 @@
     <string name="select_location">انتخاب کشور و لوکیشن</string>
     <string name="search_country">جستجوی کشور یا کد…</string>
     <string name="section_psiphon">اتصال زنجیره‌ای سایفون (لوکیشن کشورها)</string>
-    <string name="section_aether_core">هسته Psither و کلودفلر</string>
+    <string name="section_srvther_core">هسته Psither و کلودفلر</string>
     <string name="psiphon_chain_title">خروج با کشور دلخواه (سایفون)</string>
     <string name="psiphon_chain_desc">هدایت ترافیک سایفون از دل تونل مبهم‌سازی‌شده Psither برای دریافت آی‌پی کشور مورد نظر</string>
     <string name="psiphon_region_label">کشور خروجی</string>

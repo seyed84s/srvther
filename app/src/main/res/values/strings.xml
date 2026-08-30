@@ -271,7 +271,7 @@
     <string name="select_location">Select Location</string>
     <string name="search_country">Search country or code…</string>
     <string name="section_psiphon">Psiphon Multi-Country Chaining</string>
-    <string name="section_aether_core">Psither &amp; Cloudflare Core</string>
+    <string name="section_srvther_core">Psither &amp; Cloudflare Core</string>
     <string name="psiphon_chain_title">Multi-Country Exit</string>
     <string name="psiphon_chain_desc">Route traffic through Psiphon via Psither\'s obfuscated upstream tunnel for specific country geolocation</string>
     <string name="psiphon_region_label">Exit Country / Location</string>

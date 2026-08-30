@@ -20,6 +20,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Fetch libv2ray.aar
+        run: |
+          mkdir -p app/libs
+          curl -L -o app/libs/libv2ray.aar https://github.com/2dust/AndroidLibXrayLite/releases/download/v26.8.20/libv2ray.aar
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -479,8 +483,8 @@ jobs:
                 || { echo "ERROR: $apk lacks hev for $abi"; exit 1; }
               printf '%s\n' "$entries" | grep -qx "lib/${abi}/libaethertun.so" \
                 || { echo "ERROR: $apk lacks the aethertun JNI bridge for $abi"; exit 1; }
-              printf '%s\n' "$entries" | grep -qx "lib/${abi}/libpsi.so" \
-                || { echo "ERROR: $apk lacks the Psiphon engine for $abi"; exit 1; }
+              printf '%s\n' "$entries" | grep -qx "lib/${abi}/libgojni.so" \
+                || { echo "ERROR: $apk lacks the V2ray engine for $abi"; exit 1; }
             done
             echo "Verified native cores in $apk (${abis[*]})"
           done

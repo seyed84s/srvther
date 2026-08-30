@@ -16,7 +16,7 @@ A fresh 0-100 audit was run over the current tree after this 1.2.4 round:
 
 ---
 
-# Aether 1.2.4 - Security Audit (0-100)
+# Srvther 1.2.4 - Security Audit (0-100)
 
 Scope: full Android app source (Kotlin), VPN service, tunnel layer, native engine glue, manifest, build config, and the new 1.2.4 features (kill switch, per-app blocking bridge, engine tuning).
 

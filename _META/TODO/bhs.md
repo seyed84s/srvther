@@ -1,12 +1,12 @@
-# Aether Mobile — داکیومنت قابلیت‌های افزوده‌شده (bhs)
+# Srvther Mobile — داکیومنت قابلیت‌های افزوده‌شده (bhs)
 
-این سند خلاصه‌ی قابلیت‌هایی است که در Aether Mobile v1.2.3 به برنامه افزوده شدند.
+این سند خلاصه‌ی قابلیت‌هایی است که در Srvther Mobile v1.2.3 به برنامه افزوده شدند.
 
 ## قابلیت‌های افزوده‌شده
 
-1. **ویجت صفحه‌خانه** (`widget/AetherWidgetProvider.kt`)
+1. **ویجت صفحه‌خانه** (`widget/SrvtherWidgetProvider.kt`)
    - نمایش زنده‌ی وضعیت اتصال + اتصال/قطع با یک لمس
-   - `updatePeriodMillis=0` — بدون بیدارشدن دوره‌ای؛ به‌روزرسانی فقط هنگام تغییر وضعیت اتصال (از هوک موجود در `AetherVpnService.updateNotification`)
+   - `updatePeriodMillis=0` — بدون بیدارشدن دوره‌ای؛ به‌روزرسانی فقط هنگام تغییر وضعیت اتصال (از هوک موجود در `SrvtherVpnService.updateNotification`)
    - بازگشت به اپ در نبود رضایت VPN (همان جریان Quick Settings Tile)
 
 2. **اندازه‌گیری پینگ** (`core/PingMonitor.kt` + نشان در `ConnectionMeta`)
@@ -16,14 +16,14 @@
 
 3. **آنبوردینگ اولین اجرا** (`ui/OnboardingScreen.kt` + `data/OnboardingStore.kt`)
    - سه صفحه: خوش‌آمد / انتخاب هوشمند پروتکل / حریم خصوصی
-   - دقیقاً یک بار نمایش داده می‌شود (DataStore جداگانه `aether_onboarding`)
+   - دقیقاً یک بار نمایش داده می‌شود (DataStore جداگانه `srvther_onboarding`)
 
 4. **صفحه‌ی گزارش خرابی** (`CrashReportActivity.kt`)
-   - کنترل‌کننده‌ی خرابی `AetherApp` علاوه بر لاگ، فایل `last_crash.txt` می‌نویسد
+   - کنترل‌کننده‌ی خرابی `SrvtherApp` علاوه بر لاگ، فایل `last_crash.txt` می‌نویسد
    - در اجرای بعدی، گزارش با دکمه‌ی کپی/بستن نمایش داده می‌شود و پس از بستن حذف می‌شود
    - `exported=false` — فقط از داخل اپ باز می‌شود
 
-5. **ویجت + Tile + نوتیفیکیشن همگام** — هر سه از هوک تغییر وضعیت `AetherVpnService.updateNotification` تغذیه می‌شوند.
+5. **ویجت + Tile + نوتیفیکیشن همگام** — هر سه از هوک تغییر وضعیت `SrvtherVpnService.updateNotification` تغذیه می‌شوند.
 
 ## بهینه‌سازی مصرف منابع و باتری (اعمال‌شده)
 
@@ -34,7 +34,7 @@
 
 ## ممیزی امنیت تغییرات
 
-- `AetherWidgetProvider`: `exported=false`؛ برودکست toggle با component صریح؛ `PendingIntent` با `FLAG_IMMUTABLE`.
+- `SrvtherWidgetProvider`: `exported=false`؛ برودکست toggle با component صریح؛ `PendingIntent` با `FLAG_IMMUTABLE`.
 - `CrashReportActivity`: `exported=false`؛ فقط MainActivity بازش می‌کند؛ فایل گزارش داخل sandbox اپ و پس از بستن حذف می‌شود.
 - ویجت: بدون ذخیره‌ی داده‌ی حساس؛ اتصال از ویجت با آخرین پروفایل ذخیره‌شده در DataStore (sandbox اپ).
 - مجوز جدیدی اضافه نشده است؛ `REQUEST_INSTALL_PACKAGES` همچنان حذف است؛ `allowBackup=false` و `network_security_config` دست‌نخورده.

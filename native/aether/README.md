@@ -1,15 +1,15 @@
-# Aether
+# Srvther
 
-![Aether](Docs/Aether.png)
+![Srvther](Docs/Srvther.png)
 
 ### اینترنت آزاد برای همه:))
 **[راهنمای فارسی](README.fa.md)** · **[English Guide](Docs/DOCS.en.md)** · **[راهنمای کامل فارسی](Docs/DOCS.fa.md)**
 
 Telegram: https://t.me/CluvexStudio
 
-Aether is a censorship circumvention client designed for heavily restricted networks. It automatically discovers reachable routes, establishes an encrypted tunnel, and exposes a local SOCKS5 proxy for your applications.
+Srvther is a censorship circumvention client designed for heavily restricted networks. It automatically discovers reachable routes, establishes an encrypted tunnel, and exposes a local SOCKS5 proxy for your applications.
 
-Unlike traditional VPN clients, Aether is built for environments where Deep Packet Inspection (DPI), protocol fingerprinting, UDP throttling, and endpoint blocking are common.
+Unlike traditional VPN clients, Srvther is built for environments where Deep Packet Inspection (DPI), protocol fingerprinting, UDP throttling, and endpoint blocking are common.
 
 ## Features
 
@@ -19,7 +19,7 @@ Unlike traditional VPN clients, Aether is built for environments where Deep Pack
 - Nested WireGuard mode (`gool`)
 - Traffic obfuscation
 - Routing rules by domain, address, or port, matched from the TLS server name so they keep working behind a tun front end
-- Upstream proxy support, so Aether can dial out through another VPN or proxy already running on the machine
+- Upstream proxy support, so Srvther can dial out through another VPN or proxy already running on the machine
 - Automatic reconnection, and quick-reconnect to your last known-good gateway to skip rescanning
 - Local SOCKS5 proxy
 - Command-line flags, environment variables, or interactive prompts — your choice
@@ -37,16 +37,16 @@ Prebuilt binaries are available on the Releases page for:
 ### Termux (Android) — one-line install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/CluvexStudio/aether/main/aether.sh -o aether.sh && chmod +x aether.sh && ./aether.sh install
+curl -fsSL https://raw.githubusercontent.com/CluvexStudio/srvther/main/srvther.sh -o srvther.sh && chmod +x srvther.sh && ./srvther.sh install
 ```
 
-This detects your device architecture, downloads the matching release, verifies its checksum, and installs `aether` into `$PREFIX/bin`. Run it afterwards with:
+This detects your device architecture, downloads the matching release, verifies its checksum, and installs `srvther` into `$PREFIX/bin`. Run it afterwards with:
 
 ```bash
-aether
+srvther
 ```
 
-To update later, run `./aether.sh update`. To remove it, run `./aether.sh uninstall`.
+To update later, run `./srvther.sh update`. To remove it, run `./srvther.sh uninstall`.
 
 ## Build
 
@@ -56,11 +56,11 @@ To update later, run `./aether.sh update`. To remove it, run `./aether.sh uninst
 - C/C++ compiler
 - CMake
 
-The `quiche` repository must be placed alongside `aether`:
+The `quiche` repository must be placed alongside `srvther`:
 
 ```text
 <repo>/
-  aether/
+  srvther/
   quiche/
 ```
 
@@ -73,37 +73,37 @@ cargo build --release
 Binary:
 
 ```text
-target/release/aether
+target/release/srvther
 ```
 
 ## Docker
 
-You can run Aether in an isolated environment using Docker. The official image is available on GitHub Container Registry (GHCR).
+You can run Srvther in an isolated environment using Docker. The official image is available on GitHub Container Registry (GHCR).
 
 > **The SOCKS5 proxy has no authentication.** Anyone who can reach the port can use your tunnel. Every command below publishes the port to `127.0.0.1` only, so it stays reachable from your own machine and nothing else. Do not replace it with `-p 1819:1819`, because that form listens on every interface of the host and turns the proxy into an open relay. If you genuinely need to serve other machines, put an authenticated front end in front of it and firewall the port.
 
-The `-v aether-data:/data` volume keeps the generated WARP identity between runs. Without it every start registers a brand new device, and Cloudflare begins rate limiting your address.
+The `-v srvther-data:/data` volume keeps the generated WARP identity between runs. Without it every start registers a brand new device, and Cloudflare begins rate limiting your address.
 
 Pull and run the pre-built image (interactive mode is required for initial setup):
 
 ```bash
-docker run -it -p 127.0.0.1:1819:1819 -v aether-data:/data ghcr.io/cluvexstudio/aether:latest
+docker run -it -p 127.0.0.1:1819:1819 -v srvther-data:/data ghcr.io/cluvexstudio/srvther:latest
 ```
 
 You can also bypass prompts by providing environment variables:
 
 ```bash
-docker run -it -p 127.0.0.1:1819:1819 -v aether-data:/data \
+docker run -it -p 127.0.0.1:1819:1819 -v srvther-data:/data \
   -e AETHER_PROTOCOL=masque \
   -e AETHER_SCAN=balanced \
-  ghcr.io/cluvexstudio/aether:latest
+  ghcr.io/cluvexstudio/srvther:latest
 ```
 
 If you prefer to build the image manually from source:
 
 ```bash
-docker build -t aether .
-docker run -it -p 127.0.0.1:1819:1819 -v aether-data:/data aether
+docker build -t srvther .
+docker run -it -p 127.0.0.1:1819:1819 -v srvther-data:/data srvther
 ```
 
 ## Usage
@@ -111,18 +111,18 @@ docker run -it -p 127.0.0.1:1819:1819 -v aether-data:/data aether
 Run with no arguments and answer the prompts:
 
 ```bash
-./target/release/aether
+./target/release/srvther
 ```
 
 Or skip the prompts with flags:
 
 ```bash
-./target/release/aether --masque -4 --scan turbo --noize firewall
+./target/release/srvther --masque -4 --scan turbo --noize firewall
 ```
 
-On Windows, double-click `run-aether.bat` (included in the release zip) instead — it opens a terminal, runs `aether.exe`, and keeps the window open afterwards so you can read any errors.
+On Windows, double-click `run-srvther.bat` (included in the release zip) instead — it opens a terminal, runs `srvther.exe`, and keeps the window open afterwards so you can read any errors.
 
-Every prompt has a flag and an environment variable equivalent. Run `./target/release/aether --help` for the full list, or see the guides linked below.
+Every prompt has a flag and an environment variable equivalent. Run `./target/release/srvther --help` for the full list, or see the guides linked below.
 
 After startup, a SOCKS5 proxy will be available at:
 
@@ -172,7 +172,7 @@ MASQUE support is built on top of Cloudflare's **Quiche** library.
 
 ## Donate
 
-If Aether has been useful to you, consider supporting its development:
+If Srvther has been useful to you, consider supporting its development:
 
 - **TRX (Tron):** `TRxVSHcoADZnBfztFmFb2TQopusAwWYEVR`
 - **BTC:** `bc1qnjnvzsa5avgj7n0uy383cv5zdxfjnvvp257egm`

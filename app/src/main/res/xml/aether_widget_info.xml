@@ -5,7 +5,7 @@
     android:targetCellWidth="3"
     android:targetCellHeight="1"
     android:updatePeriodMillis="0"
-    android:initialLayout="@layout/aether_widget"
+    android:initialLayout="@layout/srvther_widget"
     android:resizeMode="horizontal"
     android:widgetCategory="home_screen"
     android:description="@string/widget_desc" />

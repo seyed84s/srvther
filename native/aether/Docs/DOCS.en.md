@@ -1,6 +1,6 @@
-# Aether
+# Srvther
 
-Aether is a user-space proxy client for Cloudflare WARP. It builds a tunnel out
+Srvther is a user-space proxy client for Cloudflare WARP. It builds a tunnel out
 of a filtered network and exposes a local SOCKS5 proxy on `127.0.0.1:1819`.
 Point a browser, a terminal, or a system proxy at that address and the traffic
 leaves through the tunnel.
@@ -18,19 +18,19 @@ process: the tunnel, a user-space TCP/IP stack, and the proxy.
 - [Routing rules](#routing-rules)
 - [Upstream proxy](#upstream-proxy)
 - [Identity files](#identity-files)
-- [Using Aether as a library](#using-aether-as-a-library)
+- [Using Srvther as a library](#using-srvther-as-a-library)
 - [Environment variables](#environment-variables)
 
 ## Running it
 
-Run `aether` with no arguments and it asks a few questions, or pass flags and it
+Run `srvther` with no arguments and it asks a few questions, or pass flags and it
 asks nothing. Every flag also has an environment variable, so the same settings
-work in a container or a service unit. `aether --help` lists all of them.
+work in a container or a service unit. `srvther --help` lists all of them.
 
 ```sh
-aether
-aether --masque --scan balanced
-aether --wg --noize aggressive --bind 127.0.0.1:1080
+srvther
+srvther --masque --scan balanced
+srvther --wg --noize aggressive --bind 127.0.0.1:1080
 ```
 
 Check that it works:
@@ -44,7 +44,7 @@ The reply should show a Cloudflare colo and `warp=on`.
 For clients that cannot speak SOCKS, add an HTTP CONNECT proxy:
 
 ```sh
-aether --http-proxy 127.0.0.1:1820
+srvther --http-proxy 127.0.0.1:1820
 ```
 
 Both listeners serve the same tunnel. Bind them to `0.0.0.0` only if you mean to
@@ -68,13 +68,13 @@ outright, `--h2` moves the same tunnel onto TCP 443, which survives networks tha
 drop QUIC entirely.
 
 ```sh
-aether --masque --h2
+srvther --masque --h2
 ```
 
 ## Finding an endpoint
 
 Cloudflare answers on many edge addresses and a filtered network usually blocks
-some of them, so Aether does not ship a single fixed address. It sweeps the
+some of them, so Srvther does not ship a single fixed address. It sweeps the
 documented ranges, verifies candidates, and keeps the one that carries real
 traffic. A handshake alone is not enough: a candidate has to pass an end-to-end
 data check before the proxy opens.
@@ -90,7 +90,7 @@ data check before the proxy opens.
 Skip the scan when you already know a good address:
 
 ```sh
-aether --peer 162.159.196.1:443
+srvther --peer 162.159.196.1:443
 ```
 
 The last working endpoint is saved, and `--quick-reconnect` reuses it without a
@@ -99,7 +99,7 @@ does not land on it again.
 
 ## Obfuscation
 
-Some networks fingerprint the first packets of a handshake. Aether can pad and
+Some networks fingerprint the first packets of a handshake. Srvther can pad and
 reshape them so the opening exchange does not match a known pattern.
 
 | Profile | Use it when |
@@ -110,7 +110,7 @@ reshape them so the opening exchange does not match a known pattern.
 | `aggressive` | the handshake is being fingerprinted |
 
 ```sh
-aether --noize aggressive
+srvther --noize aggressive
 ```
 
 Two extras apply to MASQUE only:
@@ -123,7 +123,7 @@ Two extras apply to MASQUE only:
 
 ## Zero Trust
 
-With `--team <name>` Aether enrols as a managed device on your organization's
+With `--team <name>` Srvther enrols as a managed device on your organization's
 Cloudflare Zero Trust account instead of registering an anonymous consumer
 device. It works on both MASQUE and WireGuard, and one team identity is shared
 between them, so switching transport does not consume a second device seat.
@@ -137,17 +137,17 @@ Three ways to sign in:
 | Existing token | `--access-token <jwt>` | a token you already hold |
 
 ```sh
-aether --team acme --access-email me@example.com
+srvther --team acme --access-email me@example.com
 ```
 
-Cloudflare emails a one-time code and Aether asks for it. The code can be typed
+Cloudflare emails a one-time code and Srvther asks for it. The code can be typed
 into a terminal or fed on standard input, which is how the desktop and Android
 clients answer it. You get three attempts. The resulting token is cached for the
 life of the process, so a reconnect does not ask again.
 
 `--gateway` sends HTTP and HTTPS through the organization's Gateway proxy so its
 filtering and logging apply. It is off by default because it adds a hop inside
-the tunnel and records your browsing. If the proxy stops answering, Aether falls
+the tunnel and records your browsing. If the proxy stops answering, Srvther falls
 back to direct tunnel egress rather than breaking every connection.
 
 ## Routing rules
@@ -159,7 +159,7 @@ reject foreign addresses need. Block is checked first, then direct, otherwise th
 tunnel is used.
 
 ```sh
-aether --route-block ads.example.com,port:25 --route-direct private,bank.ir
+srvther --route-block ads.example.com,port:25 --route-direct private,bank.ir
 ```
 
 | Entry | Matches |
@@ -185,17 +185,17 @@ bank.ir
 ```
 
 ```sh
-aether --routes /etc/aether/routes.conf
+srvther --routes /etc/srvther/routes.conf
 ```
 
 Rules apply to TCP and UDP. Per-application rules are deliberately not here: in
 tun mode the traffic has already lost its application identity by the time it
-reaches Aether, so that split belongs to the platform client.
+reaches Srvther, so that split belongs to the platform client.
 
 ### Name rules behind a tun
 
 Name rules also match when the proxy is handed an address instead of a name, which
-is what a tun front end does. Aether reads the name from the TLS server name or the
+is what a tun front end does. Srvther reads the name from the TLS server name or the
 HTTP `Host` header of the first bytes and decides on that; address and port rules
 still apply when no name is found.
 
@@ -209,13 +209,13 @@ the client asked for.
 
 ## Upstream proxy
 
-`--upstream` sends everything Aether dials through another proxy, which is how you
+`--upstream` sends everything Srvther dials through another proxy, which is how you
 chain it behind a VPN or proxy app already running on the machine.
 
 ```sh
-aether --upstream socks5://127.0.0.1:1080
-aether --upstream socks5://alice:s3cret@127.0.0.1:1080
-aether --upstream http://proxy.example:8080
+srvther --upstream socks5://127.0.0.1:1080
+srvther --upstream socks5://alice:s3cret@127.0.0.1:1080
+srvther --upstream http://proxy.example:8080
 ```
 
 A bare `host:port` is read as SOCKS5. Bracket an IPv6 address. Percent-encode a
@@ -229,7 +229,7 @@ password containing `@` or `:`, so `p@ss` is written `p%40ss`.
 With an HTTP proxy, add `--h2` so the whole tunnel stays on TCP:
 
 ```sh
-aether --masque --h2 --upstream http://proxy.example:8080
+srvther --masque --h2 --upstream http://proxy.example:8080
 ```
 
 The endpoint scan, the registration calls and the ECH lookup go through the proxy
@@ -240,16 +240,16 @@ The same setting is available as `AETHER_UPSTREAM`.
 
 ## Identity files
 
-On first run Aether registers a device and writes the credentials next to the
-config path, default `aether.toml`. Keep the file: deleting it registers a new
+On first run Srvther registers a device and writes the credentials next to the
+config path, default `srvther.toml`. Keep the file: deleting it registers a new
 device.
 
 | File | Holds |
 | --- | --- |
-| `aether.toml` | the WireGuard identity |
-| `aether-masque.toml` | the MASQUE identity and its certificate |
-| `aether-team-<name>.toml` | one identity per Zero Trust team |
-| `aether-*-lastconn.toml` | the last working endpoint |
+| `srvther.toml` | the WireGuard identity |
+| `srvther-masque.toml` | the MASQUE identity and its certificate |
+| `srvther-team-<name>.toml` | one identity per Zero Trust team |
+| `srvther-*-lastconn.toml` | the last working endpoint |
 
 Override any of them with `--config`, `--wg-config`, `--masque-config`. The files
 contain private keys and are written owner-readable only.
@@ -257,7 +257,7 @@ contain private keys and are written owner-readable only.
 ### When an identity stops being accepted
 
 Cloudflare can stop accepting a device that is still in your file. The handshake
-keeps succeeding in that state and no traffic passes, so Aether checks the saved
+keeps succeeding in that state and no traffic passes, so Srvther checks the saved
 identity on startup and reports it:
 
 ```text
@@ -271,25 +271,25 @@ to be told without anything being replaced.
 Only the account API refusing the device counts. Being offline or rate limited does
 not discard an identity.
 
-## Using Aether as a library
+## Using Srvther as a library
 
-Besides the `aether` binary, the crate builds `libaether.a` and `libaether.so`
+Besides the `srvther` binary, the crate builds `libsrvther.a` and `libsrvther.so`
 with a C API, so a host application can link the core instead of spawning it.
-This is what the iOS client needs, and it lets a Go program use Aether through
+This is what the iOS client needs, and it lets a Go program use Srvther through
 cgo.
 
 ```sh
 cargo build --release            # binary and both libraries
-cargo build --release --bin aether   # binary only
+cargo build --release --bin srvther   # binary only
 ```
 
 The C API is handle based and polled rather than callback based, so it is safe to
-call from any language runtime. `aether_core_start` runs the whole pipeline and
-returns a job handle; `aether_job_poll` reports progress; `aether_job_cancel`
+call from any language runtime. `srvther_core_start` runs the whole pipeline and
+returns a job handle; `srvther_job_poll` reports progress; `srvther_job_cancel`
 stops it. Separate entry points cover the individual steps: identity, Zero Trust
 sign-in, endpoint scan, verification, and the tunnel. Every reply is JSON, every
-returned string is released with `aether_string_free`, and no panic crosses the
-boundary. The header is `ios/Shared/aether.h` in the Oblivion client.
+returned string is released with `srvther_string_free`, and no panic crosses the
+boundary. The header is `ios/Shared/srvther.h` in the Oblivion client.
 
 The data path is channel based and contains no tun device code, so an embedder
 feeds packets in and reads them out directly.

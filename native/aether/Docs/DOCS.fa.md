@@ -23,14 +23,14 @@
 
 ## اجرا
 
-`aether` را بدون آرگومان اجرا کنید تا چند سؤال بپرسد، یا فلگ بدهید تا چیزی
+`srvther` را بدون آرگومان اجرا کنید تا چند سؤال بپرسد، یا فلگ بدهید تا چیزی
 نپرسد. هر فلگ یک متغیر محیطی معادل هم دارد، پس همان تنظیمات در کانتینر یا
-سرویس هم کار می‌کند. `aether --help` همه را فهرست می‌کند.
+سرویس هم کار می‌کند. `srvther --help` همه را فهرست می‌کند.
 
 ```sh
-aether
-aether --masque --scan balanced
-aether --wg --noize aggressive --bind 127.0.0.1:1080
+srvther
+srvther --masque --scan balanced
+srvther --wg --noize aggressive --bind 127.0.0.1:1080
 ```
 
 برای اطمینان از کار کردن:
@@ -44,7 +44,7 @@ curl -x socks5h://127.0.0.1:1819 https://www.cloudflare.com/cdn-cgi/trace
 برای کلاینت‌هایی که SOCKS نمی‌فهمند، یک پروکسی HTTP CONNECT هم اضافه کنید:
 
 ```sh
-aether --http-proxy 127.0.0.1:1820
+srvther --http-proxy 127.0.0.1:1820
 ```
 
 هر دو لیسنر روی همان تونل کار می‌کنند. آن‌ها را فقط وقتی به `0.0.0.0` ببندید که
@@ -69,7 +69,7 @@ MASQUE دو حامل دارد. HTTP/3 روی QUIC پیش‌فرض است. اگر
 عبور می‌کند.
 
 ```sh
-aether --masque --h2
+srvther --masque --h2
 ```
 
 ## پیدا کردن نقطه‌ی اتصال
@@ -91,7 +91,7 @@ aether --masque --h2
 اگر نشانی خوبی را از قبل می‌دانید، اسکن را رد کنید:
 
 ```sh
-aether --peer 162.159.196.1:443
+srvther --peer 162.159.196.1:443
 ```
 
 آخرین نقطه‌ی سالم ذخیره می‌شود و `--quick-reconnect` بدون جاروب جدید از همان
@@ -111,7 +111,7 @@ aether --peer 162.159.196.1:443
 | `aggressive` | هندشیک دارد انگشت‌نگاری می‌شود |
 
 ```sh
-aether --noize aggressive
+srvther --noize aggressive
 ```
 
 دو مورد فقط به MASQUE مربوط است:
@@ -138,7 +138,7 @@ WireGuard هر دو کار می‌کند و یک هویت تیمی بین‌شا
 | توکن آماده | `--access-token <jwt>` | توکنی که از قبل دارید |
 
 ```sh
-aether --team acme --access-email me@example.com
+srvther --team acme --access-email me@example.com
 ```
 
 کلادفلر یک کد یک‌بارمصرف ایمیل می‌کند و ایتر آن را می‌پرسد. کد را می‌توان در
@@ -160,7 +160,7 @@ aether --team acme --access-email me@example.com
 این صورت تونل.
 
 ```sh
-aether --route-block ads.example.com,port:25 --route-direct private,bank.ir
+srvther --route-block ads.example.com,port:25 --route-direct private,bank.ir
 ```
 
 | ورودی | چه چیزی را می‌گیرد |
@@ -186,7 +186,7 @@ bank.ir
 ```
 
 ```sh
-aether --routes /etc/aether/routes.conf
+srvther --routes /etc/srvther/routes.conf
 ```
 
 قواعد روی TCP و UDP هر دو اعمال می‌شوند. قاعده‌ی جدا برای هر برنامه عمداً اینجا
@@ -214,9 +214,9 @@ aether --routes /etc/aether/routes.conf
 که با آن ایتر را پشت یک VPN یا پروکسی درحال‌اجرا زنجیر می‌کنید.
 
 ```sh
-aether --upstream socks5://127.0.0.1:1080
-aether --upstream socks5://alice:s3cret@127.0.0.1:1080
-aether --upstream http://proxy.example:8080
+srvther --upstream socks5://127.0.0.1:1080
+srvther --upstream socks5://alice:s3cret@127.0.0.1:1080
+srvther --upstream http://proxy.example:8080
 ```
 
 اگر فقط `host:port` بنویسید، SOCKS5 فرض می‌شود. نشانی IPv6 را داخل کروشه بگذارید.
@@ -230,7 +230,7 @@ aether --upstream http://proxy.example:8080
 با پروکسی HTTP، پرچم `--h2` را اضافه کنید تا کل تانل روی TCP بماند:
 
 ```sh
-aether --masque --h2 --upstream http://proxy.example:8080
+srvther --masque --h2 --upstream http://proxy.example:8080
 ```
 
 اسکن نقطه‌ی اتصال، تماس‌های ثبت‌نام و واکشی ECH هم از پروکسی رد می‌شوند. مقصدی که
@@ -241,15 +241,15 @@ aether --masque --h2 --upstream http://proxy.example:8080
 ## فایل‌های هویت
 
 در اجرای اول، ایتر یک دستگاه ثبت می‌کند و اعتبارنامه‌ها را کنار مسیر کانفیگ
-می‌نویسد، پیش‌فرض `aether.toml`. فایل را نگه دارید: حذفش یعنی ثبت یک دستگاه
+می‌نویسد، پیش‌فرض `srvther.toml`. فایل را نگه دارید: حذفش یعنی ثبت یک دستگاه
 جدید.
 
 | فایل | محتوا |
 | --- | --- |
-| `aether.toml` | هویت وایرگارد |
-| `aether-masque.toml` | هویت MASQUE و گواهی‌اش |
-| `aether-team-<name>.toml` | یک هویت برای هر تیم Zero Trust |
-| `aether-*-lastconn.toml` | آخرین نقطه‌ی سالم |
+| `srvther.toml` | هویت وایرگارد |
+| `srvther-masque.toml` | هویت MASQUE و گواهی‌اش |
+| `srvther-team-<name>.toml` | یک هویت برای هر تیم Zero Trust |
+| `srvther-*-lastconn.toml` | آخرین نقطه‌ی سالم |
 
 با `--config`، `--wg-config` و `--masque-config` می‌توانید مسیرشان را عوض کنید.
 این فایل‌ها کلید خصوصی دارند و فقط برای مالک خواندنی نوشته می‌شوند.
@@ -273,23 +273,23 @@ aether --masque --h2 --upstream http://proxy.example:8080
 
 ## استفاده از ایتر به‌عنوان کتابخانه
 
-جدا از باینری `aether`، این کریت `libaether.a` و `libaether.so` را هم با یک
+جدا از باینری `srvther`، این کریت `libsrvther.a` و `libsrvther.so` را هم با یک
 واسط C می‌سازد، تا یک برنامه‌ی میزبان بتواند هسته را لینک کند نه اینکه آن را
 به‌عنوان پروسه اجرا کند. کلاینت iOS به همین نیاز دارد، و یک برنامه‌ی Go هم
 می‌تواند از راه cgo از ایتر استفاده کند.
 
 ```sh
 cargo build --release                # باینری و هر دو کتابخانه
-cargo build --release --bin aether   # فقط باینری
+cargo build --release --bin srvther   # فقط باینری
 ```
 
 واسط C دستگیره‌محور و مبتنی بر poll است نه callback، پس صدا زدنش از هر رانتایمی
-امن است. `aether_core_start` کل مسیر را اجرا می‌کند و یک دستگیره‌ی کار
-برمی‌گرداند، `aether_job_poll` وضعیت را می‌دهد و `aether_job_cancel` متوقفش
+امن است. `srvther_core_start` کل مسیر را اجرا می‌کند و یک دستگیره‌ی کار
+برمی‌گرداند، `srvther_job_poll` وضعیت را می‌دهد و `srvther_job_cancel` متوقفش
 می‌کند. برای مرحله‌های جداگانه هم توابع مستقل هست: هویت، ورود Zero Trust، اسکن
 نقطه‌ی اتصال، سنجش، و تونل. هر پاسخ JSON است، هر رشته‌ی برگشتی با
-`aether_string_free` آزاد می‌شود، و هیچ panic از مرز بیرون نمی‌زند. هدر آن در
-کلاینت اوبلیوین در `ios/Shared/aether.h` است.
+`srvther_string_free` آزاد می‌شود، و هیچ panic از مرز بیرون نمی‌زند. هدر آن در
+کلاینت اوبلیوین در `ios/Shared/srvther.h` است.
 
 مسیر داده کانال‌محور است و هیچ کد دستگاه tun ندارد، پس برنامه‌ی میزبان بسته‌ها
 را مستقیم می‌دهد و می‌گیرد.

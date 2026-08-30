@@ -61,11 +61,11 @@ if (useCiKeystore) {
 }
 
 android {
-    namespace = "studio.cluvex.aether"
+    namespace = "app.srvther"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "app.psither"
+        applicationId = "app.srvther"
         minSdk = 26
         targetSdk = 35
         versionCode = 10
@@ -87,14 +87,14 @@ android {
             if (githubRepo.isNotBlank()) "https://github.com/$githubRepo/releases/latest" else ""
         buildConfigField("String", "RELEASES_URL", "\"$releasesUrl\"")
 
-        // Aether engine (core) version compiled into this build. CI keeps this
-        // in sync with native/aether/CORE_VERSION via scripts/sync-core.sh.
-        val coreVersion = rootProject.file("native/aether/CORE_VERSION")
+        // Srvther engine (core) version compiled into this build. CI keeps this
+        // in sync with native/srvther/CORE_VERSION via scripts/sync-core.sh.
+        val coreVersion = rootProject.file("native/srvther/CORE_VERSION")
             .takeIf { it.exists() }?.readText()?.trim().orEmpty().ifBlank { "unknown" }
         buildConfigField("String", "CORE_VERSION", "\"$coreVersion\"")
     }
 
-    // Both native cores (libhev-socks5-tunnel.so + libaether.so) are prebuilt by
+    // Both native cores (libhev-socks5-tunnel.so + libsrvther.so) are prebuilt by
     // scripts/build-natives.sh into src/main/jniLibs, so there is NO
     // externalNativeBuild / CMake step in the Gradle build.
 
@@ -114,9 +114,9 @@ android {
                 keyPassword = signingValue("keyPassword", "KEY_PASSWORD")
             } else if (useCiKeystore) {
                 storeFile = ciKeystoreFile
-                storePassword = "aether-ci-keystore"
-                keyAlias = "aether-ci"
-                keyPassword = "aether-ci-keystore"
+                storePassword = "srvther-ci-keystore"
+                keyAlias = "srvther-ci"
+                keyPassword = "srvther-ci-keystore"
             }
         }
     }
@@ -171,7 +171,7 @@ android {
     }
 
     packaging {
-        // IMPORTANT: extract native libs on install so the bundled `aether` and
+        // IMPORTANT: extract native libs on install so the bundled `srvther` and
         // `hev` executables live on disk in nativeLibraryDir and can be exec()'d.
         jniLibs {
             useLegacyPackaging = true
@@ -222,6 +222,7 @@ androidComponents {
 }
 
 dependencies {
+    implementation(files("libs/libv2ray.aar"))
     val composeBom = platform("androidx.compose:compose-bom:2024.10.01")
     implementation(composeBom)
 

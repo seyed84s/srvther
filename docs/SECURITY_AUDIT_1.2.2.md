@@ -1,6 +1,6 @@
-# Aether Mobile — Security Audit Report, v1.2.2
+# Srvther Mobile — Security Audit Report, v1.2.2
 
-**Scope:** the complete Android application source tree (`app/src/main/java/studio/cluvex/aether/**`, `app/src/main/res/**`, `AndroidManifest.xml`, Gradle build logic, CI workflow and helper scripts) plus the way the app invokes the vendored native engine.
+**Scope:** the complete Android application source tree (`app/src/main/java/studio/cluvex/srvther/**`, `app/src/main/res/**`, `AndroidManifest.xml`, Gradle build logic, CI workflow and helper scripts) plus the way the app invokes the vendored native engine.
 **Method:** line-by-line manual review of every Kotlin file, every XML resource and every build/CI script, complemented by targeted greps for the classic mobile-VPN failure patterns (secrets, cleartext, leak paths, world-readable storage, exported components).
 **Baseline:** v1.2.1 (versionCode 5) → **v1.2.2 (versionCode 6)**.
 **Auditor role:** senior network-security / mobile penetration-testing perspective, OWASP MASVS-aligned.
@@ -33,7 +33,7 @@ The most significant hardening in this release is the **complete removal of the 
 | S-1 | API keys / tokens | **None.** The app has no account system, no telemetry backend and no authenticated API. The only outbound HTTP calls are anonymous IP-echo lookups (`ip-api.com`, `cloudflare.com/cdn-cgi/trace`, `1.1.1.1/cdn-cgi/trace`). |
 | S-2 | Private / symmetric crypto keys | **None in app code.** All key material (WireGuard/MASQUE keys) is generated at runtime *inside the native engine*; the Kotlin layer never sees, stores or transmits a private key. |
 | S-3 | Server addresses / credentials | The IP ranges in `SmartAuto.EDGES` and `Locations.CATALOG` are **public Cloudflare anycast prefixes**, not secrets. No username/password exists anywhere in the app. |
-| S-4 | Signing keystore | `.github/ci-keystore.jks.b64` with the literal password `aether-ci-keystore` is committed to the repository. **This is intentional and public by design** — see §8 “Accepted risks”. It is never bundled into the APK. |
+| S-4 | Signing keystore | `.github/ci-keystore.jks.b64` with the literal password `srvther-ci-keystore` is committed to the repository. **This is intentional and public by design** — see §8 “Accepted risks”. It is never bundled into the APK. |
 | S-5 | `local.properties` / user keystore | Correctly `.gitignore`d; the real release keystore is supplied through repository Secrets only. |
 
 **Result: PASS.** No secret material is embedded in the shipped APK.
@@ -42,7 +42,7 @@ The most significant hardening in this release is the **complete removal of the 
 
 ## 2. Cryptography & protocols
 
-**Checked:** `TunnelConfig.kt`, `AetherProcess.kt`, `NetProbe.kt`, `SmartAuto.kt`, `Locations.kt`, `ShareBridge.kt`, `network_security_config.xml`.
+**Checked:** `TunnelConfig.kt`, `SrvtherProcess.kt`, `NetProbe.kt`, `SmartAuto.kt`, `Locations.kt`, `ShareBridge.kt`, `network_security_config.xml`.
 
 ### 2.1 Algorithms
 - The app implements **no cryptography of its own**. It does not roll a cipher, a KDF, a random-number generator or a hash. All tunnel cryptography is performed by the vendored engine (WireGuard/Noise for `WIREGUARD`/`GOOL`, QUIC + TLS 1.3 via quiche for `MASQUE`).
@@ -61,7 +61,7 @@ The most significant hardening in this release is the **complete removal of the 
 
 ## 3. Data-leak risks (DNS / IPv6 / bypass)
 
-**Checked:** `vpn/AetherVpnService.kt` (VpnService.Builder configuration), `TunnelConfig.kt`, `HevTunnel.kt`, `TProxyService.kt`, `model/Profile.kt` (split tunnelling), `Diagnostics.kt`.
+**Checked:** `vpn/SrvtherVpnService.kt` (VpnService.Builder configuration), `TunnelConfig.kt`, `HevTunnel.kt`, `TProxyService.kt`, `model/Profile.kt` (split tunnelling), `Diagnostics.kt`.
 
 ### 3.1 DNS
 - The tunnel installs `1.1.1.1` and `8.8.8.8` as the VPN's DNS servers via `Builder.addDnsServer(...)`, and routes them **inside** the tunnel. Android hands DNS for all apps to the VPN's resolvers while the VPN is up.
@@ -69,7 +69,7 @@ The most significant hardening in this release is the **complete removal of the 
 - **No leak found.**
 
 ### 3.2 IPv6 / real-IP exposure
-- The service configures **both** address families (`TUN_IPV4 10.10.14.1/30`, `TUN_IPV6 fc00::10:10:14:1/126`) and installs default routes for both. This is the critical detail: a VPN that claims only the IPv4 default route leaves IPv6 traffic on the physical interface, which is the most common real-world VPN leak. Aether does not have that hole.
+- The service configures **both** address families (`TUN_IPV4 10.10.14.1/30`, `TUN_IPV6 fc00::10:10:14:1/126`) and installs default routes for both. This is the critical detail: a VPN that claims only the IPv4 default route leaves IPv6 traffic on the physical interface, which is the most common real-world VPN leak. Srvther does not have that hole.
 - When the user selects IPv4-only or IPv6-only in `IpVersion`, the *unused* family is still captured by the TUN device and black-holed rather than being released to the underlying network — so narrowing the protocol never re-opens a leak path.
 - **No leak found.**
 
@@ -87,7 +87,7 @@ The most significant hardening in this release is the **complete removal of the 
 
 | ID | Item | Assessment |
 |---|---|---|
-| L-1 | Connection profile (`DataStore` `aether_profile`) | Stored in app-private storage (`MODE_PRIVATE`, `/data/data/studio.cluvex.aether/`), unreadable by other apps on any non-rooted device. Contents are **preferences only** — protocol, scan mode, MTU, chosen location code, optional user-typed endpoint. **No credentials, no keys, no identity data.** Encryption-at-rest would add key-management complexity without protecting anything sensitive; the platform sandbox is the appropriate control. |
+| L-1 | Connection profile (`DataStore` `srvther_profile`) | Stored in app-private storage (`MODE_PRIVATE`, `/data/data/app.srvther/`), unreadable by other apps on any non-rooted device. Contents are **preferences only** — protocol, scan mode, MTU, chosen location code, optional user-typed endpoint. **No credentials, no keys, no identity data.** Encryption-at-rest would add key-management complexity without protecting anything sensitive; the platform sandbox is the appropriate control. |
 | L-2 | Diagnostics log file | App-private, and in **1.2.2 it is now size-bounded** (512 KiB with rotation to `.prev`) — previously it could grow without limit, which is both a storage and an exposure concern. Log content is connection state, not traffic. |
 | L-3 | Exported components | `AndroidManifest.xml` exports **only** the launcher activity. The `VpnService` is protected by the mandatory `BIND_VPN_SERVICE` permission (enforced by the OS). No exported `ContentProvider`, `BroadcastReceiver` or `Service` with a custom action. |
 | L-4 | `FileProvider` | **Removed in 1.2.2** together with the updater (it existed solely to hand downloaded APKs to the package installer). One fewer exported surface. |
@@ -142,7 +142,7 @@ The most significant hardening in this release is the **complete removal of the 
 ### 7.2 Third-party dependencies
 - The dependency set is deliberately minimal: AndroidX Core/Lifecycle/Activity, Jetpack Compose (BOM-managed), Material 3, DataStore-Preferences, kotlinx-coroutines. **No** ad SDK, **no** analytics SDK, **no** crash-reporting SDK, **no** HTTP client library (raw `Socket`/`HttpURLConnection` only) — so there is no third-party code with network access or device-identifier access.
 - All versions are current stable releases with no known CVEs applicable to this usage at the time of audit. Because there is no analytics/ad layer, the classic “SDK exfiltrates device identifiers” class of finding is structurally impossible here.
-- **Native side:** `libaether.so`, `libhev-socks5-tunnel.so` and `libaethertun.so` are **built from source in CI**, not downloaded as opaque binaries, and the CI verifies that all three exist for every ABI before publishing. The engine version is now pinned in `native/aether/CORE_VERSION` and upgraded only by the audited `scripts/sync-core.sh`.
+- **Native side:** `libsrvther.so`, `libhev-socks5-tunnel.so` and `libsrvthertun.so` are **built from source in CI**, not downloaded as opaque binaries, and the CI verifies that all three exist for every ABI before publishing. The engine version is now pinned in `native/srvther/CORE_VERSION` and upgraded only by the audited `scripts/sync-core.sh`.
 
 ### 7.3 Code robustness issues found and fixed in 1.2.2
 | ID | Issue | Fix |

@@ -57,5 +57,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PsitherMobile"
+rootProject.name = "SrvtherMobile"
 include(":app")

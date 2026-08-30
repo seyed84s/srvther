@@ -1,6 +1,6 @@
-# Aether Android — Security Review (v1.2.0)
+# Srvther Android — Security Review (v1.2.0)
 
-_Scope: `studio.cluvex.aether` Android app + its use of the native `libaether.so` engine and `libhev-socks5-tunnel.so`. Reviewed as source (no runtime pen-test)._
+_Scope: `app.srvther` Android app + its use of the native `libsrvther.so` engine and `libhev-socks5-tunnel.so`. Reviewed as source (no runtime pen-test)._
 
 ## Overall score: 82 / 100  (was ~63 before this release)
 
@@ -25,7 +25,7 @@ A solid, privacy-respecting circumvention client. The biggest pre-existing risks
 - Impact: closes an unauthenticated open-proxy on untrusted networks.
 
 ### 2. MTU 8500 → 1280 default
-The hardcoded 8500 MTU caused fragmentation/black-holing on many Iranian mobile carriers (a reliability *and* fingerprinting concern — abnormal MTU is a DPI signal). Now defaults to 1280 and is user-tunable (1280–8500), clamped to a sane range in `AetherVpnService.establishTun`.
+The hardcoded 8500 MTU caused fragmentation/black-holing on many Iranian mobile carriers (a reliability *and* fingerprinting concern — abnormal MTU is a DPI signal). Now defaults to 1280 and is user-tunable (1280–8500), clamped to a sane range in `SrvtherVpnService.establishTun`.
 
 ### 3. Cellular IP leak/confusion fixed
 `NetProbe` forced IPv4 resolution for the geo/IP probe, so the "Your IP" badge no longer shows a bogus IPv6 on dual-stack carriers (Hamrah-e-Aval). This is a correctness fix; it also avoids accidentally displaying an unexpected address family to the user.
