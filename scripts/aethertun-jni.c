@@ -192,3 +192,25 @@ Java_studio_cluvex_aether_core_TProxyService_TProxyGetStats(JNIEnv *env, jclass 
     (*env)->SetLongArrayRegion(env, result, 0, 4, values);
     return result;
 }
+
+/* Srvther JNI exports (app.srvther.core.TProxyService) */
+JNIEXPORT jboolean JNICALL
+Java_app_srvther_core_TProxyService_TProxyStartService(JNIEnv *env,
+                                                      jclass clazz,
+                                                      jstring config_path,
+                                                      jint tun_fd)
+{
+    return Java_studio_cluvex_aether_core_TProxyService_TProxyStartService(env, clazz, config_path, tun_fd);
+}
+
+JNIEXPORT void JNICALL
+Java_app_srvther_core_TProxyService_TProxyStopService(JNIEnv *env, jclass clazz)
+{
+    Java_studio_cluvex_aether_core_TProxyService_TProxyStopService(env, clazz);
+}
+
+JNIEXPORT jlongArray JNICALL
+Java_app_srvther_core_TProxyService_TProxyGetStats(JNIEnv *env, jclass clazz)
+{
+    return Java_studio_cluvex_aether_core_TProxyService_TProxyGetStats(env, clazz);
+}

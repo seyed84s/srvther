@@ -59,22 +59,26 @@ object TProxyService {
             // Loads our bridge; the Android linker automatically pulls in its
             // DT_NEEDED dependency libhev-socks5-tunnel.so from the same APK
             // native-library directory.
-            System.loadLibrary("srvthertun")
+            try {
+                System.loadLibrary("aethertun")
+            } catch (e: UnsatisfiedLinkError) {
+                System.loadLibrary("srvthertun")
+            }
             // Build marker: lets diagnostics logs prove WHICH build is on the
             // device (versionName alone cannot distinguish rebuilds of 1.2.0).
-            Log.i("srvther-tunnel", "native bridge libsrvthertun r3 loaded")
+            Log.i("srvther-tunnel", "native bridge libaethertun loaded")
             runCatching {
-                DiagnosticsLog.i("tunnel", "native bridge libsrvthertun r3 loaded")
+                DiagnosticsLog.i("tunnel", "native bridge libaethertun loaded")
             }
             loadFailure = null
             true
         } catch (t: Throwable) {
             // UnsatisfiedLinkError is an Error (NOT an Exception) and would
             // otherwise escape `catch (Exception)` blocks and crash the app.
-            Log.e("srvther-tunnel", "Failed to load libsrvthertun.so", t)
+            Log.e("srvther-tunnel", "Failed to load libaethertun.so", t)
             loadFailure = "${t::class.java.simpleName}: ${t.message ?: "unknown native loader error"}"
             runCatching {
-                DiagnosticsLog.e("tunnel", "FATAL: could not load libsrvthertun.so: $loadFailure")
+                DiagnosticsLog.e("tunnel", "FATAL: could not load native bridge: $loadFailure")
             }
             false
         }
