@@ -1,4 +1,4 @@
-name: Build SRVX APK
+name: Build Srvther APK
 
 on:
   workflow_dispatch:
@@ -73,14 +73,14 @@ jobs:
     # Recreate the keystore from the base64 secret
     - name: Decode keystore
       run: |
-        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > ${{ github.workspace }}/V2rayNG/app/srvx-release.keystore
-        echo "SRVX_KEYSTORE_PATH=${{ github.workspace }}/V2rayNG/app/srvx-release.keystore" >> $GITHUB_ENV
+        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > ${{ github.workspace }}/V2rayNG/app/srvther-release.keystore
+        echo "SRVTHER_KEYSTORE_PATH=${{ github.workspace }}/V2rayNG/app/srvther-release.keystore" >> $GITHUB_ENV
 
     - name: Build signed release APK
       env:
-        SRVX_KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-        SRVX_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-        SRVX_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        SRVTHER_KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        SRVTHER_KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        SRVTHER_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
       run: |
         cd ${{ github.workspace }}/V2rayNG
         echo "sdk.dir=${ANDROID_HOME}" > local.properties
@@ -91,6 +91,6 @@ jobs:
       uses: actions/upload-artifact@v4
       if: ${{ success() }}
       with:
-        name: srvx-apk
+        name: srvther-apk
         path: ${{ github.workspace }}/V2rayNG/app/build/outputs/apk/**/*.apk
         if-no-files-found: error
