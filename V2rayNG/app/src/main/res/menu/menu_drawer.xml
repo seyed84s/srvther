@@ -7,11 +7,7 @@
         <item
             android:id="@+id/srvx_theme_toggle"
             android:icon="@drawable/ic_srvx_theme_24dp"
-            android:title="@string/srvx_theme_toggle" />
-        <item
-            android:id="@+id/aether_switch_mode"
-            android:icon="@drawable/ic_qu_switch_24dp"
-            android:title="تغییر حالت (رایگان / اختصاصی)" />
+            android:title="@string/srvther_theme_toggle" />
         <item
             android:id="@+id/aether_settings"
             android:icon="@drawable/srvx_ic_shield"
