@@ -369,7 +369,7 @@ class SrvtherVpnService : VpnService() {
             )
         } else {
             establishTun(profile)
-            startTun2Socks(profile, targetPort, isChainedVless)
+            startTun2Socks(profile, targetPort)
             // LAN sharing: if the user enabled it, expose the tunnel to other
             // devices on the same Wi-Fi/hotspot (HTTP + SOCKS5 bridge).
             if (profile.lanShare) ShareBridge.start(localOnly = false)
@@ -524,12 +524,7 @@ class SrvtherVpnService : VpnService() {
             builder.setBlocking(true)
         }
 
-        val isChainedVless = profile.vlessConfig.isNotBlank()
-        if (isChainedVless) {
-            builder.addDnsServer("198.18.0.2")
-        } else {
-            TunnelConfig.DNS_SERVERS.forEach { builder.addDnsServer(it) }
-        }
+        TunnelConfig.DNS_SERVERS.forEach { builder.addDnsServer(it) }
 
         // Split tunneling + loop prevention (keeps the engine's own traffic off
         // the TUN, equivalent to v2rayNG's in-process protect()).
@@ -597,8 +592,8 @@ class SrvtherVpnService : VpnService() {
         }
     }
 
-    private fun startTun2Socks(profile: ConnectionProfile, targetPort: Int = SOCKS_PORT, isVless: Boolean = false) {
-        if (profile.blockedApps.isNotEmpty() && !isVless) {
+    private fun startTun2Socks(profile: ConnectionProfile, targetPort: Int = SOCKS_PORT) {
+        if (profile.blockedApps.isNotEmpty()) {
             val pfd = tun ?: throw IllegalStateException("TUN descriptor is null")
             val bridge = SocksTunBridge(
                 vpnService = this,
@@ -614,7 +609,7 @@ class SrvtherVpnService : VpnService() {
             tunBridge = bridge
             return
         }
-        val config = writeHevConfig(profile.mtu.coerceIn(576, 9000), targetPort, isVless)
+        val config = writeHevConfig(profile.mtu.coerceIn(576, 9000), targetPort)
         val fd = tun?.fd ?: throw IllegalStateException("TUN descriptor is null")
         DiagnosticsLog.i(TAG, "Starting hev-socks5-tunnel in-process (fd=$fd, targetPort=$targetPort)")
         HevTunnel.start(config.absolutePath, fd)
@@ -624,7 +619,7 @@ class SrvtherVpnService : VpnService() {
     /**
      * Writes the hev-socks5-tunnel config.
      */
-    private fun writeHevConfig(mtu: Int, targetPort: Int = SOCKS_PORT, isVless: Boolean = false): File {
+    private fun writeHevConfig(mtu: Int, targetPort: Int = SOCKS_PORT): File {
         val file = File(filesDir, "hev.yaml")
         // Keep udp mode as 'udp' so that non-DNS UDP traffic is sent as UDP ASSOCIATE.
         // Psiphon will instantly reject UDP ASSOCIATE, triggering fast fallback to TCP
@@ -641,14 +636,12 @@ class SrvtherVpnService : VpnService() {
             appendLine("  port: $targetPort")
             appendLine("  udp: 'udp'")
             
-            if (isVless) {
-                appendLine("mapdns:")
-                appendLine("  address: 198.18.0.2")
-                appendLine("  port: 53")
-                appendLine("  network: 100.64.0.0")
-                appendLine("  netmask: 255.192.0.0")
-                appendLine("  cache-size: 10000")
-            }
+            appendLine("mapdns:")
+            appendLine("  address: 1.1.1.1")
+            appendLine("  port: 53")
+            appendLine("  network: 100.64.0.0")
+            appendLine("  netmask: 255.192.0.0")
+            appendLine("  cache-size: 10000")
             
             appendLine("misc:")
             appendLine("  task-stack-size: 86016")
