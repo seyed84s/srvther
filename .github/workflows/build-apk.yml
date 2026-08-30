@@ -95,7 +95,7 @@ jobs:
         echo "tag_name=v$VERSION" >> $GITHUB_OUTPUT
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       if: ${{ success() }}
       with:
         name: srvther-apk
