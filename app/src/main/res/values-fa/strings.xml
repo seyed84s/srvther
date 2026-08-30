@@ -95,7 +95,7 @@
     <string name="advanced_open">باز کردن تنظیمات پیشرفته</string>
 
     <!-- Quick Settings tile -->
-    <string name="qs_tile_label">اِتِر</string>
+    <string name="qs_tile_label">سِروثِر</string>
 
     <!-- Share VPN panel -->
     <string name="share_title">اشتراک‌گذاری VPN</string>
@@ -214,7 +214,6 @@
     <string name="dns_label">DNS داخل تونل</string>
     <string name="dns_hint">1.1.1.1, 1.0.0.1</string>
     <string name="dns_help">برای مقدار پیش‌فرض هسته (1.1.1.1, 1.0.0.1) خالی بگذارید. ورودی‌های نامعتبر نادیده گرفته می‌شوند.</string>
-    <string name="qs_tile_label">سِروثِر</string>
 
     <!-- Feature merge: widget, onboarding, ping, crash report -->
     <string name="widget_desc">اتصال یا قطع سِروثِر با یک لمس</string>

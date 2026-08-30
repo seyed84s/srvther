@@ -215,7 +215,6 @@
     <string name="dns_label">DNS inside the tunnel</string>
     <string name="dns_hint">1.1.1.1, 1.0.0.1</string>
     <string name="dns_help">Leave empty for the engine default (1.1.1.1, 1.0.0.1). Invalid entries are ignored.</string>
-    <string name="qs_tile_label">Srvther</string>
 
     <string name="widget_desc">Connect or disconnect Srvther with one tap</string>
     <string name="widget_toggle_desc">Toggle connection</string>
